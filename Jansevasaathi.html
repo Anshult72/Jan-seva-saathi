@@ -1,0 +1,4660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jan Seva Saathi – AI Powered Citizen Service Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Noto Sans', system-ui, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #1a365d;
+            --secondary-blue: #2d4a8a;
+            --accent-gold: #d4af37;
+            --accent-light-gold: #f4e4b7;
+            --govt-green: #2e7d32;
+            --govt-green-light: #4caf50;
+            --govt-red: #c62828;
+            --govt-red-light: #ef5350;
+            --govt-yellow: #f9a825;
+            --light-gray: #f5f7fa;
+            --medium-gray: #e0e6ed;
+            --dark-gray: #4a5568;
+            --text-dark: #2d3748;
+            --text-light: #ffffff;
+            --card-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 12px 28px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-blue: #2d4a8a;
+            --secondary-blue: #1a365d;
+            --accent-gold: #e6c158;
+            --accent-light-gold: #f4e4b7;
+            --govt-green: #4caf50;
+            --govt-green-light: #81c784;
+            --govt-red: #ef5350;
+            --govt-red-light: #e57373;
+            --govt-yellow: #ffb74d;
+            --light-gray: #1a1a2e;
+            --medium-gray: #16213e;
+            --dark-gray: #b0b0b0;
+            --text-dark: #ffffff;
+            --text-light: #ffffff;
+            --card-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            --shadow-heavy: 0 12px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            background-color: var(--light-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header / Navigation */
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: var(--text-light);
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 3px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-menu li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .nav-menu li a:hover, .nav-menu li a.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+        }
+
+        /* Language Pills */
+        .language-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .language-pill {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .language-pill.active {
+            background: var(--accent-gold);
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .language-pill:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .hamburger-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .hamburger-menu:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--light-gray) 0%, #e2e8f0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(45, 74, 138, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h2 {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: 20px;
+            color: var(--dark-gray);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-gold), #e6c158);
+            color: var(--text-dark);
+            border: none;
+            padding: 18px 35px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-blue);
+            color: var(--text-light);
+            border: none;
+            padding: 18px 35px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-secondary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .hero-visual {
+            flex: 1;
+            position: relative;
+            height: 400px;
+        }
+
+        .phone-mockup {
+            position: absolute;
+            width: 280px;
+            height: 500px;
+            background: #1a1a1a;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: 10px solid #333;
+            right: 0;
+            top: -50px;
+            transform-origin: center;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #f0f2f5;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .chat-bubble {
+            background: var(--secondary-blue);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+            margin-bottom: 15px;
+            font-size: 14px;
+            animation: slideIn 0.3s ease;
+            position: relative;
+        }
+
+        .chat-bubble.user {
+            background: var(--govt-green);
+            margin-left: auto;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .token-visual {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            width: 300px;
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow-heavy);
+            border: 2px solid var(--accent-gold);
+            animation: tokenGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes tokenGlow {
+            from {
+                box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            }
+            to {
+                box-shadow: 0 12px 28px rgba(212, 175, 55, 0.3);
+            }
+        }
+
+        .token-visual h4 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .token-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .token-detail-item {
+            font-size: 14px;
+        }
+
+        .token-detail-item .label {
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 80px 0;
+            background: var(--light-gray);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--accent-gold);
+            border-radius: 2px;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            position: relative;
+        }
+
+        .step-card {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            text-align: center;
+            border-top: 5px solid var(--accent-gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(212, 175, 55, 0.05) 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .step-card:hover::before {
+            opacity: 1;
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--accent-gold);
+            color: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .step-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--secondary-blue);
+            transition: var(--transition);
+        }
+
+        .step-card:hover .step-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .step-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        .step-card p {
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+        }
+
+        .flow-arrow {
+            position: absolute;
+            top: 50%;
+            right: -30px;
+            font-size: 40px;
+            color: var(--accent-gold);
+            transform: translateY(-50%);
+            animation: arrowBounce 2s infinite;
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            50% { transform: translateY(-50%) translateX(10px); }
+        }
+
+        /* Problems Section */
+        .problems-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--light-gray) 0%, #e2e8f0 100%);
+        }
+
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .problem-card {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            border-left: 5px solid var(--govt-red);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--govt-red);
+            transition: var(--transition);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px) translateX(5px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .problem-card:hover::before {
+            width: 10px;
+        }
+
+        .problem-icon {
+            font-size: 36px;
+            color: var(--govt-red);
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .problem-card:hover .problem-icon {
+            transform: scale(1.1);
+        }
+
+        .problem-text h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+        }
+
+        /* AI Assistant Page */
+        .page-container {
+            padding: 40px 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .page-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .ai-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .ai-input-panel {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-input-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--secondary-blue));
+        }
+
+        .ai-input-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Voice Input Button - ENHANCED */
+        .voice-input-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--govt-green), var(--govt-green-light));
+            color: white;
+            border: none;
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .voice-input-btn:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .voice-input-btn.listening {
+            background: linear-gradient(135deg, var(--govt-red), var(--govt-red-light));
+            animation: pulse 1.5s infinite;
+        }
+
+        .voice-input-btn.processing {
+            background: linear-gradient(135deg, #f9a825, #ffb74d);
+        }
+
+        .voice-input-btn.success {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 83, 80, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(239, 83, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 83, 80, 0); }
+        }
+
+        .voice-wave {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.3;
+            display: none;
+        }
+
+        .voice-wave.active {
+            display: block;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3) 10px,
+                transparent 20px
+            );
+            animation: waveMove 1s linear infinite;
+        }
+
+        @keyframes waveMove {
+            from { background-position: 0 0; }
+            to { background-position: 20px 0; }
+        }
+
+        .text-input-area {
+            width: 100%;
+            height: 150px;
+            padding: 20px;
+            border: 2px solid var(--medium-gray);
+            border-radius: 10px;
+            font-size: 18px;
+            resize: none;
+            margin-bottom: 20px;
+            font-family: inherit;
+            background: var(--light-gray);
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        .text-input-area:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-action::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-action:hover::before {
+            left: 100%;
+        }
+
+        .btn-speak {
+            background: var(--secondary-blue);
+            color: white;
+        }
+
+        .btn-speak:hover {
+            background: #1a365d;
+            transform: translateY(-3px);
+        }
+
+        .btn-send {
+            background: var(--accent-gold);
+            color: var(--text-dark);
+        }
+
+        .btn-send:hover {
+            background: #c9a03d;
+            transform: translateY(-3px);
+        }
+
+        /* Auto Read Toggle */
+        .auto-read-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid var(--medium-gray);
+        }
+
+        .toggle-label {
+            font-weight: 600;
+            color: var(--dark-gray);
+            font-size: 16px;
+        }
+
+        .ai-analysis-panel {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-analysis-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-blue), var(--accent-gold));
+        }
+
+        .ai-detection {
+            background: rgba(45, 74, 138, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--secondary-blue);
+        }
+
+        .ai-detection h3 {
+            color: var(--secondary-blue);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detection-item {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .detection-label {
+            font-weight: 600;
+            width: 150px;
+            color: var(--dark-gray);
+        }
+
+        .detection-value {
+            color: var(--primary-blue);
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .ai-response-card {
+            background: var(--light-gray);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--medium-gray);
+            position: relative;
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .response-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .response-header.online {
+            color: var(--govt-green);
+        }
+
+        .response-header.offline {
+            color: var(--govt-red);
+        }
+
+        /* Speak Button on Response Card */
+        .response-speak-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--secondary-blue);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .response-speak-btn:hover {
+            background: #1a365d;
+            transform: scale(1.1);
+        }
+
+        .response-speak-btn.speaking {
+            background: var(--govt-red);
+            animation: speakPulse 1s infinite;
+        }
+
+        @keyframes speakPulse {
+            0% { box-shadow: 0 0 0 0 rgba(41, 128, 185, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(41, 128, 185, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(41, 128, 185, 0); }
+        }
+
+        .ai-badge {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+
+        .steps-list {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .steps-list li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .steps-list li::before {
+            content: '✓';
+            position: absolute;
+            left: -20px;
+            color: var(--govt-green);
+            font-weight: bold;
+        }
+
+        .documents-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .doc-tag {
+            background: #e8f5e9;
+            color: var(--govt-green);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .doc-tag:hover {
+            transform: translateY(-2px);
+        }
+
+        .doc-tag.offline {
+            background: #ffebee;
+            color: var(--govt-red);
+        }
+
+        .response-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Token System Page */
+        .token-hero {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 60px 0;
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .token-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .token-hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .token-hero h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        .token-hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+
+        .token-card-container {
+            max-width: 500px;
+            margin: 0 auto 60px;
+        }
+
+        .token-card {
+            background: var(--light-gray);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-heavy);
+            border: 3px solid var(--accent-gold);
+            position: relative;
+            overflow: hidden;
+            animation: tokenPulse 3s infinite;
+        }
+
+        @keyframes tokenPulse {
+            0% { transform: scale(1); box-shadow: var(--shadow-heavy); }
+            50% { transform: scale(1.01); box-shadow: 0 16px 32px rgba(212, 175, 55, 0.3); }
+            100% { transform: scale(1); box-shadow: var(--shadow-heavy); }
+        }
+
+        .token-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--secondary-blue));
+        }
+
+        .token-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .token-number {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--primary-blue);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            font-family: monospace;
+        }
+
+        .token-office {
+            font-size: 22px;
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+        }
+
+        .token-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .token-detail {
+            background: rgba(45, 74, 138, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .token-detail:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .token-detail .label {
+            font-weight: 600;
+            color: var(--dark-gray);
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .token-detail .value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .crowd-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-low {
+            color: var(--govt-green);
+        }
+
+        .status-medium {
+            color: var(--govt-yellow);
+        }
+
+        .status-high {
+            color: var(--govt-red);
+        }
+
+        .token-instructions {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--accent-gold);
+        }
+
+        .token-instructions h4 {
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .token-instructions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .token-instructions li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .token-instructions li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .token-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Process Guide Page */
+        .process-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--medium-gray);
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .process-tab {
+            padding: 12px 24px;
+            background: var(--light-gray);
+            border: 2px solid var(--medium-gray);
+            border-radius: 8px 8px 0 0;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--dark-gray);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .process-tab:hover::before {
+            left: 100%;
+        }
+
+        .process-tab.active {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .process-tab:hover:not(.active) {
+            background: rgba(45, 74, 138, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .process-content {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .process-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-gold), var(--secondary-blue));
+        }
+
+        .process-tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .process-tab-content.active {
+            display: block;
+        }
+
+        .process-step {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--medium-gray);
+            align-items: flex-start;
+        }
+
+        .process-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .step-number-circle {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-gold);
+            color: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .process-step:hover .step-number-circle {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .step-details h4 {
+            color: var(--primary-blue);
+            margin-bottom: 8px;
+        }
+
+        .step-duration {
+            display: inline-block;
+            background: rgba(45, 74, 138, 0.1);
+            color: var(--secondary-blue);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* Schemes Page */
+        .eligibility-checker {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eligibility-checker::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--govt-green), var(--accent-gold));
+        }
+
+        .eligibility-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .eligibility-form {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-gray);
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--medium-gray);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--light-gray);
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .eligible-schemes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .eligible-scheme-card {
+            background: var(--light-gray);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--govt-green);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .eligible-scheme-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .eligible-scheme-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(46, 125, 50, 0.05) 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .eligible-scheme-card:hover::before {
+            opacity: 1;
+        }
+
+        .match-percentage {
+            display: inline-block;
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .match-high {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+        }
+
+        .match-medium {
+            background: linear-gradient(135deg, #f9a825, #ffb74d);
+        }
+
+        .match-low {
+            background: linear-gradient(135deg, #c62828, #ef5350);
+        }
+
+        .schemes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .scheme-category-card {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scheme-category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(45, 74, 138, 0.05) 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .scheme-category-card:hover::before {
+            opacity: 1;
+        }
+
+        .scheme-category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .scheme-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--secondary-blue);
+            transition: var(--transition);
+        }
+
+        .scheme-category-card:hover .scheme-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .scheme-category-card h3 {
+            font-size: 22px;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+
+        /* Scheme Detail Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-top: 5px solid var(--secondary-blue);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Language & Accessibility Page */
+        .accessibility-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .accessibility-card {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .accessibility-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-blue), var(--accent-gold));
+        }
+
+        .accessibility-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .accessibility-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .language-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .language-option {
+            padding: 15px;
+            border: 2px solid var(--medium-gray);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .language-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .language-option:hover::before {
+            left: 100%;
+        }
+
+        .language-option:hover {
+            border-color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.05);
+            transform: translateX(5px);
+        }
+
+        .language-option.active {
+            border-color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--govt-green);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        /* User Profile */
+        .profile-container {
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        .profile-card {
+            background: var(--light-gray);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-heavy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--secondary-blue));
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--secondary-blue));
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .profile-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .eligible-schemes {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--medium-gray);
+        }
+
+        /* Admin Dashboard */
+        .admin-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .admin-card {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--secondary-blue));
+        }
+
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .admin-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-stat {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--secondary-blue);
+            margin-bottom: 10px;
+        }
+
+        .chart-container {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 60px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-gray);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--secondary-blue));
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--govt-green);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-heavy);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: var(--govt-red);
+        }
+
+        .toast.warning {
+            background: var(--govt-yellow);
+            color: var(--text-dark);
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-blue);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--secondary-blue));
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--accent-light-gold);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-gold);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 1024px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-visual {
+                width: 100%;
+                height: 400px;
+            }
+            
+            .phone-mockup {
+                right: 50%;
+                transform: translateX(50%);
+            }
+            
+            .token-visual {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .flow-arrow {
+                display: none;
+            }
+            
+            .problems-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .ai-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .eligibility-form {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--primary-blue);
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                z-index: 1000;
+            }
+            
+            .nav-menu.show {
+                display: flex;
+            }
+            
+            .hamburger-menu {
+                display: flex;
+            }
+            
+            .hero-text h2 {
+                font-size: 36px;
+            }
+            
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+            }
+            
+            .token-details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .token-actions {
+                flex-direction: column;
+            }
+            
+            .profile-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .eligibility-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .language-pills {
+                display: none;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .ai-container {
+                gap: 20px;
+            }
+            
+            .ai-input-panel, .ai-analysis-panel {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h2 {
+                font-size: 28px;
+            }
+            
+            .hero-text p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .btn-primary, .btn-secondary {
+                padding: 15px 25px;
+                font-size: 16px;
+            }
+            
+            .token-card {
+                padding: 20px;
+            }
+            
+            .process-tabs {
+                flex-direction: column;
+            }
+            
+            .process-tab {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Page Navigation */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+
+        /* AI Thinking Animation */
+        @keyframes dot1 { 0%, 20% { opacity: 0; } 40% { opacity: 1; } 60%, 100% { opacity: 0; } }
+        @keyframes dot2 { 0%, 40% { opacity: 0; } 60% { opacity: 1; } 80%, 100% { opacity: 0; } }
+        @keyframes dot3 { 0%, 60% { opacity: 0; } 80% { opacity: 1; } 100% { opacity: 0; } }
+
+        /* Voice Wave Animation */
+        @keyframes voiceWave {
+            0% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+            100% { transform: scaleY(0.3); }
+        }
+
+        /* Accessibility Improvements */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus Styles */
+        *:focus {
+            outline: 2px solid var(--accent-gold);
+            outline-offset: 2px;
+        }
+
+        /* Print Styles */
+        @media print {
+            .header, .footer, .token-actions, .response-actions, .hamburger-menu, .theme-toggle {
+                display: none !important;
+            }
+            
+            .token-card {
+                box-shadow: none;
+                border: 2px solid #000;
+            }
+            
+            body {
+                background: white !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header / Navigation -->
+    <header class="header" role="banner">
+        <div class="container nav-container">
+            <div class="logo-section" role="button" tabindex="0" onclick="showPage('home')" onkeypress="if(event.key === 'Enter') showPage('home')">
+                <div class="logo" aria-label="Jan Seva Saathi Logo">🏛️</div>
+                <div class="logo-text">
+                    <h1>Jan Seva Saathi</h1>
+                    <p>AI Powered Citizen Service Platform</p>
+                </div>
+            </div>
+            <ul class="nav-menu" role="navigation">
+                <li><a href="#" class="nav-link active" data-page="home" role="menuitem">Home</a></li>
+                <li><a href="#" class="nav-link" data-page="ai-assistant" role="menuitem">AI Assistant</a></li>
+                <li><a href="#" class="nav-link" data-page="process-guide" role="menuitem">Process Guide</a></li>
+                <li><a href="#" class="nav-link" data-page="token-system" role="menuitem">Smart Token</a></li>
+                <li><a href="#" class="nav-link" data-page="schemes" role="menuitem">Schemes</a></li>
+                <li><a href="#" class="nav-link" data-page="accessibility" role="menuitem">Accessibility</a></li>
+                <li><a href="#" class="nav-link" data-page="profile" role="menuitem">Profile</a></li>
+                <li><a href="#" class="nav-link" data-page="admin" role="menuitem">Admin</a></li>
+            </ul>
+            <div class="nav-right">
+                <!-- Language Pills -->
+                <div class="language-pills" role="listbox" aria-label="Select language">
+                    <div class="language-pill active" data-lang="hi" role="option" aria-selected="true">हिंदी</div>
+                    <div class="language-pill" data-lang="en" role="option" aria-selected="false">English</div>
+                    <div class="language-pill" data-lang="mr" role="option" aria-selected="false">मराठी</div>
+                    <div class="language-pill" data-lang="te" role="option" aria-selected="false">తెలుగు</div>
+                </div>
+                <!-- Theme Toggle -->
+                <div class="theme-toggle" role="button" tabindex="0" aria-label="Toggle theme" onclick="toggleTheme()" onkeypress="if(event.key === 'Enter') toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </div>
+                <div class="hamburger-menu" role="button" tabindex="0" aria-label="Toggle menu" onclick="toggleMenu()" onkeypress="if(event.key === 'Enter') toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" role="alert" aria-live="polite">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Operation completed successfully!</span>
+    </div>
+
+    <!-- Home Page -->
+    <section id="home" class="page active" role="main">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <h2 id="heroTitle">Jan Seva Saathi – Your AI Guide for Government Services</h2>
+                    <p id="heroSubtitle">Get scheme info, document list, and smart tokens in your local language. Reduce wait times, get accurate information, and access services faster.</p>
+                    <div class="hero-actions">
+                        <button class="btn-primary" id="talkToAI" aria-label="Talk to AI Assistant">
+                            <i class="fas fa-microphone"></i> Talk to Jan Seva AI
+                        </button>
+                        <button class="btn-secondary" id="startWithText" aria-label="Start with text input">
+                            <i class="fas fa-keyboard"></i> Start with Text
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="phone-mockup" aria-label="Demo of Jan Seva AI in action">
+                        <div class="phone-screen">
+                            <div class="chat-bubble">Hello! I'm Jan Seva AI. How can I help you today?</div>
+                            <div class="chat-bubble user">I need a ration card</div>
+                            <div class="chat-bubble">I'll help you with that. Are you looking for a new ration card or renewal?</div>
+                            <div class="chat-bubble user">New ration card</div>
+                            <div class="chat-bubble">For a new ration card, you'll need: Aadhaar Card, Income Certificate, Address Proof. Would you like to apply online or get a token for office visit?</div>
+                        </div>
+                    </div>
+                    <div class="token-visual">
+                        <h4><i class="fas fa-ticket-alt"></i> Smart Token</h4>
+                        <div class="token-details">
+                            <div class="token-detail-item">
+                                <div class="label">Token No:</div>
+                                <div class="value">JS-1045</div>
+                            </div>
+                            <div class="token-detail-item">
+                                <div class="label">Time Slot:</div>
+                                <div class="value">11:30 AM</div>
+                            </div>
+                            <div class="token-detail-item">
+                                <div class="label">Office:</div>
+                                <div class="value">Tehsil Office</div>
+                            </div>
+                            <div class="token-detail-item">
+                                <div class="label">Crowd:</div>
+                                <div class="value status-medium">Medium</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2 class="section-title">How Jan Seva Saathi Works</h2>
+                <div class="steps-container">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">🗣️</div>
+                        <h3>Tell Your Problem</h3>
+                        <p>Use voice or text to describe what government service you need. Speak in your local language - Hindi, English, or regional languages.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">🤖</div>
+                        <h3>AI Explains & Checks Eligibility</h3>
+                        <p>Our AI understands your request, checks eligibility for schemes, lists required documents, and explains the complete process.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">🎫</div>
+                        <h3>Get Token or Online Link</h3>
+                        <p>Receive a smart token with time slot for office visit or get direct link for online application. No more waiting in long queues.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problems Section -->
+        <section class="problems-section">
+            <div class="container">
+                <h2 class="section-title">Problems We Solve For Citizens</h2>
+                <div class="problems-grid">
+                    <div class="problem-card">
+                        <div class="problem-icon">❌</div>
+                        <div class="problem-text">
+                            <h3>Long Queues in Government Offices</h3>
+                            <p>Citizens waste 4-6 hours waiting in lines for basic services. Our smart token system provides scheduled appointments.</p>
+                        </div>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">❌</div>
+                        <div class="problem-text">
+                            <h3>No Clear Info About Schemes</h3>
+                            <p>Complex eligibility criteria and lack of awareness prevent citizens from accessing benefits they're entitled to.</p>
+                        </div>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">❌</div>
+                        <div class="problem-text">
+                            <h3>Confusing Document Requirements</h3>
+                            <p>Citizens make multiple trips to offices due to incomplete documents. Our AI provides precise document checklists.</p>
+                        </div>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">❌</div>
+                        <div class="problem-text">
+                            <h3>Language Barriers</h3>
+                            <p>Official information is often only in English. Our platform works in local languages with voice support.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <!-- AI Assistant Page -->
+    <section id="ai-assistant" class="page" role="main">
+        <div class="container page-container">
+            <h1 class="page-title"><i class="fas fa-robot"></i> <span id="aiPageTitle">AI Assistant</span></h1>
+            <div class="ai-container">
+                <div class="ai-input-panel">
+                    <h2 class="ai-input-title"><i class="fas fa-microphone"></i> <span id="inputQueryText">Input Your Query</span></h2>
+                    <button class="voice-input-btn" id="voiceInputBtn" aria-label="Click to speak">
+                        <i class="fas fa-microphone"></i> 
+                        <span id="voiceButtonText">Click to Speak</span>
+                        <div class="voice-wave" id="voiceWave"></div>
+                    </button>
+                    <div class="divider" style="text-align: center; margin: 15px 0; color: var(--dark-gray);" id="orText">OR</div>
+                    <textarea class="text-input-area" id="textInputArea" 
+                              placeholder="Type your query here... Example: 'Mujhe ration card banana hai' or 'I need a new birth certificate'"
+                              aria-label="Type your query"></textarea>
+                    <div class="input-actions">
+                        <button class="btn-action btn-speak" id="speakButton" aria-label="Speak the response">
+                            <i class="fas fa-volume-up"></i> <span id="speakButtonText">Speak</span>
+                        </button>
+                        <button class="btn-action btn-send" id="sendTextButton" aria-label="Send text query">
+                            <i class="fas fa-paper-plane"></i> <span id="sendButtonText">Send Text</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Auto Read Toggle -->
+                    <div class="auto-read-toggle">
+                        <span class="toggle-label" id="autoReadLabel">Auto Read AI Response:</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoReadToggle" checked aria-label="Auto read AI response">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="ai-analysis-panel" id="aiAnalysisPanel">
+                    <!-- AI Thinking Overlay will be inserted here -->
+                    <div class="ai-detection">
+                        <h3><i class="fas fa-brain"></i> <span id="aiUnderstandingText">AI Understanding</span></h3>
+                        <div class="detection-item">
+                            <div class="detection-label" id="serviceDetectedLabel">Service Detected:</div>
+                            <div class="detection-value" id="serviceDetectedValue">None</div>
+                        </div>
+                        <div class="detection-item">
+                            <div class="detection-label" id="userLocationLabel">User Location:</div>
+                            <div class="detection-value" id="userLocationValue">Raipur District, Chhattisgarh</div>
+                        </div>
+                        <div class="detection-item">
+                            <div class="detection-label" id="categoryLabel">Category:</div>
+                            <div class="detection-value" id="categoryValue">General</div>
+                        </div>
+                        <div class="detection-item">
+                            <div class="detection-label" id="priorityLabel">Priority:</div>
+                            <div class="detection-value" id="priorityValue">Normal</div>
+                        </div>
+                        <div class="detection-item">
+                            <div class="detection-label" id="detectedLanguageLabel">Detected Language:</div>
+                            <div class="detection-value" id="detectedLanguageValue">English</div>
+                        </div>
+                    </div>
+                    <div class="ai-response-card" id="onlineCard">
+                        <button class="response-speak-btn" id="onlineSpeakBtn" title="Read AI Response" aria-label="Read AI response aloud">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                        <div class="response-header online">
+                            <i class="fas fa-check-circle"></i> <span id="onlineAvailableText">Online Application Available</span>
+                        </div>
+                        <p id="onlineDescription">You can apply for this service online through the official government portal.</p>
+                        <h4 id="stepsTitle">Steps:</h4>
+                        <ol class="steps-list" id="onlineSteps">
+                            <li>Visit the official portal</li>
+                            <li>Login with your Aadhaar number</li>
+                            <li>Fill the application form</li>
+                            <li>Upload required documents</li>
+                            <li>Submit and note application number</li>
+                        </ol>
+                        <h4 id="requiredDocsTitle">Required Documents:</h4>
+                        <div class="documents-list" id="onlineDocuments">
+                            <div class="doc-tag">Aadhaar Card</div>
+                            <div class="doc-tag">Address Proof</div>
+                            <div class="doc-tag">Income Certificate</div>
+                        </div>
+                        <div class="response-actions">
+                            <button class="btn-action btn-send" id="goToPortalBtn">
+                                <i class="fas fa-external-link-alt"></i> <span id="goToPortalText">Go to Official Portal</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="ai-response-card" id="offlineCard">
+                        <button class="response-speak-btn" id="offlineSpeakBtn" title="Read AI Response" aria-label="Read AI response aloud">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                        <div class="response-header offline">
+                            <i class="fas fa-building"></i> <span id="officeRequiredText">Office Visit Required</span>
+                        </div>
+                        <p id="offlineDescription">For document verification, you need to visit the government office.</p>
+                        <h4 id="officeDetailsTitle">Office Details:</h4>
+                        <p id="officeDetails"><strong>Tehsil Office, Raipur</strong><br>
+                        Address: Civil Lines, Raipur, Chhattisgarh 492001<br>
+                        Hours: 10 AM - 5 PM (Mon-Fri)</p>
+                        <h4 id="requiredDocsTitle2">Required Documents (Originals + Copies):</h4>
+                        <div class="documents-list" id="offlineDocuments">
+                            <div class="doc-tag offline">Aadhaar Card</div>
+                            <div class="doc-tag offline">Income Certificate</div>
+                            <div class="doc-tag offline">Address Proof</div>
+                        </div>
+                        <div class="response-actions">
+                            <button class="btn-action btn-speak" id="generateTokenBtn">
+                                <i class="fas fa-ticket-alt"></i> <span id="generateTokenText">Generate Token</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Guide Page -->
+    <section id="process-guide" class="page" role="main">
+        <div class="container page-container">
+            <h1 class="page-title"><i class="fas fa-map-signs"></i> <span id="processGuideTitle">Process Guide</span></h1>
+            <div class="process-tabs">
+                <button class="process-tab active" data-tab="online" aria-controls="onlineProcess" aria-selected="true">Online Process</button>
+                <button class="process-tab" data-tab="offline" aria-controls="offlineProcess" aria-selected="false">Office Visit Process</button>
+                <button class="process-tab" data-tab="hybrid" aria-controls="hybridProcess" aria-selected="false">Hybrid Process</button>
+            </div>
+            <div class="process-content">
+                <div class="process-tab-content active" id="onlineProcess" role="tabpanel" aria-labelledby="onlineTab">
+                    <h3 style="color: var(--govt-green); margin-bottom: 20px;">
+                        <i class="fas fa-laptop"></i> Online Application Process
+                    </h3>
+                    <div class="process-step">
+                        <div class="step-number-circle">1</div>
+                        <div class="step-details">
+                            <h4>Visit Official Portal</h4>
+                            <p>Go to the government's official website for the service. For example, use the National Portal of India or state-specific portals.</p>
+                            <span class="step-duration">5 minutes</span>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number-circle">2</div>
+                        <div class="step-details">
+                            <h4>Register/Login</h4>
+                            <p>Create an account using your mobile number and Aadhaar, or login with existing credentials. Ensure your mobile is linked with Aadhaar.</p>
+                            <span class="step-duration">10 minutes</span>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number-circle">3</div>
+                        <div class="step-details">
+                            <h4>Fill Application Form</h4>
+                            <p>Complete the online form with accurate personal details. The form will auto-fill some information from your Aadhaar database.</p>
+                            <span class="step-duration">15-20 minutes</span>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number-circle">4</div>
+                        <div class="step-details">
+                            <h4>Upload Documents</h4>
+                            <p>Scan and upload all required documents in specified formats (PDF/JPG). Ensure documents are clear and readable.</p>
+                            <span class="step-duration">10 minutes</span>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number-circle">5</div>
+                        <div class="step-details">
+                            <h4>Submit & Track</h4>
+                            <p>Submit the application and note your application number. You can track status online and will receive SMS updates.</p>
+                            <span class="step-duration">5 minutes</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="process-tab-content" id="offlineProcess" role="tabpanel" aria-labelledby="offlineTab">
+                    <h3 style="color: var(--govt-red); margin-bottom: 20px;">
+                        <i class="fas fa-building"></i> Office Visit Process
+                    </h3>
+                    <div class="process-step">
+                        <div class="step-number-circle">1</div>
+                        <div class="step-details">
+                            <h4>Generate Smart Token</h4>
+                            <p>Use Jan Seva Saathi to generate a smart token with scheduled time slot. This reduces waiting time at the office.</p>
+                            <span class="step-duration">2 minutes</span>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number-circle">2</div>
+                        <div class="step-details">
+                            <h4>Prepare Documents</h4>
+                            <p>Collect all original documents plus 2 photocopies as per the checklist provided by the AI assistant.</p>
+                            <span class="step-duration">Varies</span>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number-circle">3</div>
+                        <div class="step-details">
+                            <h4>Visit Office</h4>
+                            <p>Arrive 10 minutes before your time slot. Show your token at the designated counter for priority service.</p>
+                            <span class="step-duration">Travel time + 30 min</span>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number-circle">4</div>
+                        <div class="step-details">
+                            <h4>Document Verification</h4>
+                            <p>Officials will verify your original documents. You may need to fill additional forms provided at the office.</p>
+                            <span class="step-duration">15-30 minutes</span>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number-circle">5</div>
+                        <div class="step-details">
+                            <h4>Receive Acknowledgement</h4>
+                            <p>Get an acknowledgement receipt with tracking number. You can check status online or via SMS.</p>
+                            <span class="step-duration">5 minutes</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="process-tab-content" id="hybridProcess" role="tabpanel" aria-labelledby="hybridTab">
+                    <h3 style="color: var(--accent-gold); margin-bottom: 20px;">
+                        <i class="fas fa-exchange-alt"></i> Hybrid Process
+                    </h3>
+                    <div class="process-step">
+                        <div class="step-number-circle">1</div>
+                        <div class="step-details">
+                            <h4>Start Online Application</h4>
+                            <p>Begin the process online by filling the initial application form and uploading scanned documents.</p>
+                            <span class="step-duration">20 minutes</span>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number-circle">2</div>
+                        <div class="step-details">
+                            <h4>Schedule Office Visit</h4>
+                            <p>After online submission, schedule an appointment for biometric verification or document submission.</p>
+                            <span class="step-duration">5 minutes</span>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number-circle">3</div>
+                        <div class="step-details">
+                            <h4>Complete In-Person</h4>
+                            <p>Visit the office for final verification. Bring originals of uploaded documents for cross-checking.</p>
+                            <span class="step-duration">30 minutes</span>
+                        </div>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-number-circle">4</div>
+                        <div class="step-details">
+                            <h4>Track Online</h4>
+                            <p>After office visit, track your application status online. You'll receive SMS notifications at each stage.</p>
+                            <span class="step-duration">Ongoing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Smart Token System Page -->
+    <section id="token-system" class="page" role="main">
+        <div class="token-hero">
+            <div class="container token-hero-content">
+                <h1 id="tokenTitle">Smart Token System</h1>
+                <p id="tokenSubtitle">No more waiting in long queues. Get scheduled appointments with real-time crowd information and estimated wait times.</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="token-card-container">
+                <div class="token-card" id="tokenCard">
+                    <div class="token-header">
+                        <div class="token-number" id="tokenNumber">JS-1045</div>
+                        <div class="token-office" id="tokenOffice">Tehsil Office, Raipur</div>
+                        <div class="token-date" id="tokenDate">Appointment Date: 15 March 2024</div>
+                    </div>
+                    <div class="token-details-grid">
+                        <div class="token-detail">
+                            <div class="label" id="timeSlotLabel">Estimated Time Slot</div>
+                            <div class="value" id="timeSlotValue">11:30 AM – 12:00 PM</div>
+                        </div>
+                        <div class="token-detail">
+                            <div class="label" id="crowdStatusLabel">Crowd Status</div>
+                            <div class="value">
+                                <div class="crowd-status">
+                                    <span class="status-medium" id="crowdStatus">🟡 Medium Crowd</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="token-detail">
+                            <div class="label" id="expectedWaitLabel">Expected Wait</div>
+                            <div class="value" id="expectedWaitValue">15-20 minutes</div>
+                        </div>
+                        <div class="token-detail">
+                            <div class="label" id="serviceTypeLabel">Service Type</div>
+                            <div class="value" id="serviceTypeValue">Ration Card</div>
+                        </div>
+                    </div>
+                    <div class="token-instructions">
+                        <h4><i class="fas fa-info-circle"></i> <span id="instructionsTitle">Important Instructions</span></h4>
+                        <ul id="instructionsList">
+                            <li>Carry original documents + 2 photocopies</li>
+                            <li>Reach office 10 minutes before your time slot</li>
+                            <li>Show this token at Counter No. 3</li>
+                            <li>Token validity: 30 minutes from scheduled time</li>
+                        </ul>
+                    </div>
+                    <div class="token-actions">
+                        <button class="btn-primary" id="downloadTokenBtn" aria-label="Download token as PDF">
+                            <i class="fas fa-download"></i> <span id="downloadTokenText">Download Token (PDF)</span>
+                        </button>
+                        <button class="btn-secondary" id="saveTokenBtn" aria-label="Save token on phone">
+                            <i class="fas fa-mobile-alt"></i> <span id="saveTokenText">Save on Phone</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schemes & Services Page -->
+    <section id="schemes" class="page" role="main">
+        <div class="container page-container">
+            <h1 class="page-title"><i class="fas fa-search"></i> Schemes & Services Explorer</h1>
+            
+            <!-- Eligibility Checker -->
+            <div class="eligibility-checker">
+                <div class="eligibility-header">
+                    <h2 style="color: var(--primary-blue);">Eligibility Checker</h2>
+                    <button class="btn-action btn-speak" id="voiceProfileBtn" aria-label="Use voice for profile input">
+                        <i class="fas fa-microphone"></i> Voice Profile Input
+                    </button>
+                </div>
+                <div class="eligibility-form">
+                    <div class="form-group">
+                        <label class="form-label" for="ageInput">Age</label>
+                        <input type="number" class="form-input" id="ageInput" placeholder="Enter age" min="1" max="120" aria-label="Enter your age">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="incomeInput">Annual Income (₹)</label>
+                        <select class="form-input" id="incomeInput" aria-label="Select annual income range">
+                            <option value="">Select Income</option>
+                            <option value="low">Less than 1,00,000</option>
+                            <option value="medium">1,00,000 - 3,00,000</option>
+                            <option value="high">3,00,000 - 5,00,000</option>
+                            <option value="very-high">Above 5,00,000</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="categoryInput">Category</label>
+                        <select class="form-input" id="categoryInput" aria-label="Select your category">
+                            <option value="">Select Category</option>
+                            <option value="general">General</option>
+                            <option value="obc">OBC</option>
+                            <option value="sc">SC</option>
+                            <option value="st">ST</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="stateInput">State</label>
+                        <select class="form-input" id="stateInput" aria-label="Select your state">
+                            <option value="">Select State</option>
+                            <option value="chhattisgarh">Chhattisgarh</option>
+                            <option value="maharashtra">Maharashtra</option>
+                            <option value="delhi">Delhi</option>
+                            <option value="karnataka">Karnataka</option>
+                            <option value="tamilnadu">Tamil Nadu</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-primary" id="checkEligibilityBtn" style="width: 100%; margin-bottom: 20px;" aria-label="Check eligible schemes">
+                    <i class="fas fa-calculator"></i> Check Eligible Schemes
+                </button>
+                
+                <!-- Recommended Schemes -->
+                <div id="recommendedSchemes" style="display: none;">
+                    <h4 style="color: var(--primary-blue); margin-bottom: 15px;">Recommended Schemes for You:</h4>
+                    <div class="eligible-schemes-grid" id="eligibleSchemesGrid">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <p class="section-subtitle" style="text-align: center; margin-bottom: 40px; font-size: 18px; color: var(--dark-gray);">
+                Browse government schemes by category. Click on any category to see detailed information.
+            </p>
+            <div class="schemes-grid">
+                <div class="scheme-category-card" data-scheme="health" role="button" tabindex="0" onclick="showSchemeDetail('health')" onkeypress="if(event.key === 'Enter') showSchemeDetail('health')">
+                    <div class="scheme-icon">🏥</div>
+                    <h3>Health Schemes</h3>
+                    <p>Ayushman Bharat, PM Jan Arogya, Health Insurance</p>
+                </div>
+                <div class="scheme-category-card" data-scheme="education" role="button" tabindex="0" onclick="showSchemeDetail('education')" onkeypress="if(event.key === 'Enter') showSchemeDetail('education')">
+                    <div class="scheme-icon">📚</div>
+                    <h3>Education Schemes</h3>
+                    <p>Scholarships, Mid-day Meal, Free Textbooks</p>
+                </div>
+                <div class="scheme-category-card" data-scheme="pension" role="button" tabindex="0" onclick="showSchemeDetail('pension')" onkeypress="if(event.key === 'Enter') showSchemeDetail('pension')">
+                    <div class="scheme-icon">👵</div>
+                    <h3>Pension Schemes</h3>
+                    <p>Old Age, Widow, Disability Pensions</p>
+                </div>
+                <div class="scheme-category-card" data-scheme="ration" role="button" tabindex="0" onclick="showSchemeDetail('ration')" onkeypress="if(event.key === 'Enter') showSchemeDetail('ration')">
+                    <div class="scheme-icon">🛒</div>
+                    <h3>Ration & Food</h3>
+                    <p>Food Security, Ration Cards, PM Garib Kalyan</p>
+                </div>
+                <div class="scheme-category-card" data-scheme="certificates" role="button" tabindex="0" onclick="showSchemeDetail('certificates')" onkeypress="if(event.key === 'Enter') showSchemeDetail('certificates')">
+                    <div class="scheme-icon">📄</div>
+                    <h3>Certificates</h3>
+                    <p>Birth, Death, Income, Caste, Domicile</p>
+                </div>
+                <div class="scheme-category-card" data-scheme="employment" role="button" tabindex="0" onclick="showSchemeDetail('employment')" onkeypress="if(event.key === 'Enter') showSchemeDetail('employment')">
+                    <div class="scheme-icon">💼</div>
+                    <h3>Employment</h3>
+                    <p>MGNREGA, Skill Development, Startup Schemes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Language & Accessibility Page -->
+    <section id="accessibility" class="page" role="main">
+        <div class="container page-container">
+            <h1 class="page-title"><i class="fas fa-universal-access"></i> Language & Accessibility</h1>
+            <p class="section-subtitle" style="text-align: center; margin-bottom: 40px; font-size: 18px; color: var(--dark-gray);">
+                Making government services accessible to all citizens, regardless of language, literacy, or ability.
+            </p>
+            <div class="accessibility-container">
+                <div class="accessibility-card">
+                    <h3><i class="fas fa-language"></i> Language Support</h3>
+                    <p>Access information and services in your preferred language:</p>
+                    <div class="language-options">
+                        <div class="language-option active" data-lang="hi" role="button" tabindex="0" onclick="changeLanguage('hi')" onkeypress="if(event.key === 'Enter') changeLanguage('hi')">
+                            <i class="fas fa-check-circle"></i> हिंदी (Hindi)
+                        </div>
+                        <div class="language-option" data-lang="en" role="button" tabindex="0" onclick="changeLanguage('en')" onkeypress="if(event.key === 'Enter') changeLanguage('en')">
+                            <i class="fas fa-check-circle"></i> English
+                        </div>
+                        <div class="language-option" data-lang="mr" role="button" tabindex="0" onclick="changeLanguage('mr')" onkeypress="if(event.key === 'Enter') changeLanguage('mr')">
+                            <i class="fas fa-check-circle"></i> मराठी (Marathi)
+                        </div>
+                        <div class="language-option" data-lang="te" role="button" tabindex="0" onclick="changeLanguage('te')" onkeypress="if(event.key === 'Enter') changeLanguage('te')">
+                            <i class="fas fa-check-circle"></i> తెలుగు (Telugu)
+                        </div>
+                    </div>
+                </div>
+                <div class="accessibility-card">
+                    <h3><i class="fas fa-assistive-listening-systems"></i> Voice Mode</h3>
+                    <p>For visually impaired or illiterate users:</p>
+                    <div style="margin: 20px 0;">
+                        <button class="btn-action btn-speak" id="listenToAI" style="width: 100%;" aria-label="Listen to AI response">
+                            <i class="fas fa-headphones"></i> <span id="listenButtonText">Listen to AI Response</span>
+                        </button>
+                    </div>
+                    <div style="margin: 20px 0;">
+                        <button class="btn-action btn-send" id="speakInstead" style="width: 100%;" aria-label="Speak instead of typing">
+                            <i class="fas fa-microphone"></i> <span id="speakInsteadText">Speak Instead of Typing</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="accessibility-card">
+                    <h3><i class="fas fa-eye"></i> Simple UI Mode</h3>
+                    <p>Simplified interface with larger buttons and icons for elderly users:</p>
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 30px;">
+                        <span id="simpleModeLabel">Enable Simple Mode:</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="simpleModeToggle" checked aria-label="Enable simple mode">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div style="margin-top: 30px;">
+                        <div class="doc-tag" style="display: inline-block; margin-right: 10px;">Bigger Text</div>
+                        <div class="doc-tag" style="display: inline-block; margin-right: 10px;">High Contrast</div>
+                        <div class="doc-tag" style="display: inline-block;">Voice Guidance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Profile Page -->
+    <section id="profile" class="page" role="main">
+        <div class="container page-container">
+            <h1 class="page-title"><i class="fas fa-user-circle"></i> User Profile</h1>
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">JS</div>
+                        <h2>Citizen Profile</h2>
+                        <p>Your profile helps AI personalize scheme recommendations and service guidance.</p>
+                    </div>
+                    <form class="profile-form" id="profileForm">
+                        <div class="form-group">
+                            <label class="form-label" for="fullName">Full Name</label>
+                            <input type="text" class="form-input" id="fullName" value="Rajesh Kumar" placeholder="Enter your full name" aria-label="Enter your full name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="profileAge">Age</label>
+                            <input type="number" class="form-input" id="profileAge" value="42" placeholder="Enter your age" min="1" max="120" aria-label="Enter your age">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="district">District</label>
+                            <select class="form-input" id="district" aria-label="Select your district">
+                                <option>Raipur</option>
+                                <option>Bilaspur</option>
+                                <option>Durg</option>
+                                <option>Rajnandgaon</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="state">State</label>
+                            <input type="text" class="form-input" id="state" value="Chhattisgarh" readonly aria-label="Your state">
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label" for="profileCategory">Category</label>
+                            <select class="form-input" id="profileCategory" aria-label="Select your category">
+                                <option>General</option>
+                                <option>OBC</option>
+                                <option>SC</option>
+                                <option>ST</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label" for="profileIncome">Annual Income (₹)</label>
+                            <select class="form-input" id="profileIncome" aria-label="Select your annual income range">
+                                <option>Less than 1,00,000</option>
+                                <option>1,00,000 - 3,00,000</option>
+                                <option selected>3,00,000 - 5,00,000</option>
+                                <option>Above 5,00,000</option>
+                            </select>
+                        </div>
+                    </form>
+                    <div class="eligible-schemes">
+                        <h3><i class="fas fa-award"></i> Eligible Schemes Based on Profile</h3>
+                        <div style="margin-top: 20px;">
+                            <div class="doc-tag" style="background: #e3f2fd; color: #1565c0; margin-bottom: 10px;">PM Awas Yojana (Housing)</div>
+                            <div class="doc-tag" style="background: #e8f5e9; color: #2e7d32; margin-bottom: 10px;">Ayushman Bharat (Health Insurance)</div>
+                            <div class="doc-tag" style="background: #fff3e0; color: #ef6c00; margin-bottom: 10px;">PM Kisan Samman Nidhi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Dashboard Page -->
+    <section id="admin" class="page" role="main">
+        <div class="container page-container">
+            <h1 class="page-title"><i class="fas fa-chart-line"></i> Government Admin Dashboard</h1>
+            <p class="section-subtitle" style="text-align: center; margin-bottom: 40px; font-size: 18px; color: var(--dark-gray);">
+                Real-time monitoring and analytics for government officials to optimize service delivery.
+            </p>
+            <div class="admin-container">
+                <div class="admin-card">
+                    <h3><i class="fas fa-ticket-alt"></i> Total Tokens Today</h3>
+                    <div class="admin-stat" id="totalTokens">1,245</div>
+                    <p>+12% from yesterday</p>
+                </div>
+                <div class="admin-card">
+                    <h3><i class="fas fa-users"></i> Active Services</h3>
+                    <div class="admin-stat">18</div>
+                    <p>Across 6 departments</p>
+                </div>
+                <div class="admin-card">
+                    <h3><i class="fas fa-building"></i> Office Crowd Levels</h3>
+                    <div class="admin-stat">42%</div>
+                    <p>Average occupancy across offices</p>
+                </div>
+                <div class="admin-card">
+                    <h3><i class="fas fa-clock"></i> Avg. Wait Time</h3>
+                    <div class="admin-stat">22 min</div>
+                    <p>Reduced from 45 min (-51%)</p>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div style="text-align: center;">
+                    <i class="fas fa-chart-bar" style="font-size: 48px; margin-bottom: 20px; color: var(--medium-gray);"></i>
+                    <h3 style="color: var(--dark-gray);">Tokens Generated Per Hour</h3>
+                    <p style="color: var(--dark-gray); margin-top: 10px;">(Live data visualization would appear here in production)</p>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div style="text-align: center;">
+                    <i class="fas fa-map" style="font-size: 48px; margin-bottom: 20px; color: var(--medium-gray);"></i>
+                    <h3 style="color: var(--dark-gray);">Office Crowd Heatmap</h3>
+                    <p style="color: var(--dark-gray); margin-top: 10px;">(Geographic visualization of crowd levels across offices)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Jan Seva Saathi</h4>
+                    <p>AI-powered platform for accessible government services. Reducing wait times, improving transparency, and empowering citizens.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="nav-link" data-page="home">Home</a></li>
+                        <li><a href="#" class="nav-link" data-page="ai-assistant">AI Assistant</a></li>
+                        <li><a href="#" class="nav-link" data-page="process-guide">Process Guide</a></li>
+                        <li><a href="#" class="nav-link" data-page="token-system">Smart Token</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="showPage('schemes')">Ration Card Services</a></li>
+                        <li><a href="#" onclick="showPage('schemes')">Birth/Death Certificate</a></li>
+                        <li><a href="#" onclick="showPage('schemes')">Pension Schemes</a></li>
+                        <li><a href="#" onclick="showPage('schemes')">Health Insurance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="showToast('Help Center: Coming soon!')">Help Center</a></li>
+                        <li><a href="#" onclick="showFeedbackModal()">Feedback</a></li>
+                        <li><a href="#" onclick="showPage('accessibility')">Privacy Policy</a></li>
+                        <li><a href="#" onclick="showPage('accessibility')">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 Jan Seva Saathi – AI Powered Citizen Service Platform. All rights reserved.</p>
+                <p>This is a prototype for hackathon demonstration purposes.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Feedback Modal -->
+    <div class="modal-overlay" id="feedbackModal" style="display: none;">
+        <div class="modal-content">
+            <h2 style="color: var(--primary-blue); margin-bottom: 20px;"><i class="fas fa-comment-dots"></i> Give Feedback</h2>
+            <div class="form-group">
+                <label class="form-label">Your Feedback</label>
+                <textarea class="form-input" id="feedbackText" rows="5" placeholder="Tell us how we can improve..."></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Rating</label>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button class="btn-action" onclick="setRating(1)">★</button>
+                    <button class="btn-action" onclick="setRating(2)">★★</button>
+                    <button class="btn-action" onclick="setRating(3)">★★★</button>
+                    <button class="btn-action" onclick="setRating(4)">★★★★</button>
+                    <button class="btn-action" onclick="setRating(5)">★★★★★</button>
+                </div>
+            </div>
+            <div class="response-actions" style="margin-top: 30px;">
+                <button class="btn-action btn-speak" onclick="submitFeedback()">
+                    <i class="fas fa-paper-plane"></i> Submit Feedback
+                </button>
+                <button class="btn-action btn-send" onclick="closeFeedbackModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // ENHANCED JAN SEVA SAATHI - AI VOICE PLATFORM
+        // ============================================
+        // All existing functionality preserved + 10 major improvements added
+        // ============================================
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            initEnhancedFeatures();
+            loadSavedData();
+            initTheme();
+        });
+
+        // 1. INITIALIZE ALL ENHANCED FEATURES
+        // ============================================
+        function initEnhancedFeatures() {
+            // Initialize speech recognition
+            initSpeechRecognition();
+            
+            // Initialize text-to-speech
+            initTextToSpeech();
+            
+            // Initialize language support
+            initLanguageSupport();
+            
+            // Initialize process guide
+            initProcessGuide();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Initialize theme
+            initTheme();
+            
+            // Initialize localStorage
+            initLocalStorage();
+            
+            console.log('Jan Seva Saathi - Enhanced AI Voice Platform initialized successfully!');
+        }
+
+        // 2. REAL VOICE INPUT - Web Speech API IMPROVED
+        // ============================================
+        let recognition = null;
+        let isListening = false;
+        let currentSpeechLanguage = 'hi-IN';
+        let speechSynthesis = window.speechSynthesis;
+        
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                
+                recognition.continuous = false;
+                recognition.interimResults = true;
+                recognition.maxAlternatives = 1;
+                
+                recognition.onstart = function() {
+                    console.log('Speech recognition started');
+                    isListening = true;
+                    document.getElementById('voiceInputBtn').classList.add('listening');
+                    document.getElementById('voiceWave').classList.add('active');
+                    document.getElementById('voiceButtonText').textContent = 'Listening... Speak now';
+                };
+                
+                recognition.onresult = function(event) {
+                    let transcript = '';
+                    let isFinal = false;
+                    
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        transcript += event.results[i][0].transcript;
+                        isFinal = event.results[i].isFinal;
+                    }
+                    
+                    // Update text area with live transcription
+                    document.getElementById('textInputArea').value = transcript;
+                    
+                    // Update detected language
+                    const langMap = {
+                        'hi-IN': 'Hindi',
+                        'en-IN': 'English',
+                        'mr-IN': 'Marathi',
+                        'te-IN': 'Telugu'
+                    };
+                    document.getElementById('detectedLanguageValue').textContent = langMap[currentSpeechLanguage] || 'English';
+                    
+                    // If final result, process query
+                    if (isFinal) {
+                        setTimeout(() => {
+                            recognition.stop();
+                        }, 500);
+                    }
+                };
+                
+                recognition.onend = function() {
+                    console.log('Speech recognition ended');
+                    isListening = false;
+                    document.getElementById('voiceInputBtn').classList.remove('listening');
+                    document.getElementById('voiceInputBtn').classList.add('processing');
+                    document.getElementById('voiceWave').classList.remove('active');
+                    document.getElementById('voiceButtonText').textContent = 'Processing...';
+                    
+                    // Process the query after a short delay
+                    setTimeout(() => {
+                        document.getElementById('voiceInputBtn').classList.remove('processing');
+                        document.getElementById('voiceInputBtn').classList.add('success');
+                        document.getElementById('voiceButtonText').textContent = 'Done! Click to speak again';
+                        
+                        // Auto-process the query
+                        const query = document.getElementById('textInputArea').value.trim();
+                        if (query) {
+                            processUserQuery(query);
+                        }
+                        
+                        setTimeout(() => {
+                            document.getElementById('voiceInputBtn').classList.remove('success');
+                            document.getElementById('voiceButtonText').textContent = 'Click to Speak';
+                        }, 2000);
+                    }, 1000);
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    isListening = false;
+                    document.getElementById('voiceInputBtn').classList.remove('listening', 'processing');
+                    document.getElementById('voiceWave').classList.remove('active');
+                    document.getElementById('voiceButtonText').textContent = 'Click to Speak';
+                    
+                    if (event.error === 'not-allowed') {
+                        showToast('Microphone access denied. Please enable microphone permissions.', 'error');
+                    } else if (event.error === 'no-speech') {
+                        showToast('No speech detected. Please try again.', 'error');
+                    } else {
+                        showToast('Speech recognition error. Please try again.', 'error');
+                    }
+                };
+            } else {
+                console.warn('Speech recognition not supported');
+                document.getElementById('voiceInputBtn').disabled = true;
+                document.getElementById('voiceButtonText').textContent = 'Voice Not Supported';
+                showToast('Speech recognition is not supported in your browser. Please use Chrome or Edge.', 'warning');
+            }
+        }
+        
+        function setSpeechRecognitionLanguage(langCode) {
+            const langMap = {
+                'hi': 'hi-IN',
+                'en': 'en-IN',
+                'mr': 'mr-IN',
+                'te': 'te-IN'
+            };
+            currentSpeechLanguage = langMap[langCode] || 'en-IN';
+            if (recognition) {
+                recognition.lang = currentSpeechLanguage;
+            }
+        }
+        
+        function toggleVoiceInput() {
+            if (!recognition) {
+                initSpeechRecognition();
+            }
+            
+            if (isListening) {
+                recognition.stop();
+            } else {
+                // Clear previous text
+                document.getElementById('textInputArea').value = '';
+                
+                // Set language based on active language pill
+                const activeLang = document.querySelector('.language-pill.active');
+                if (activeLang) {
+                    const langCode = activeLang.getAttribute('data-lang');
+                    setSpeechRecognitionLanguage(langCode);
+                }
+                
+                recognition.start();
+            }
+        }
+
+        // 3. REAL AI VOICE OUTPUT - Text-to-Speech IMPROVED
+        // ============================================
+        let isSpeaking = false;
+        let autoReadEnabled = true;
+        let currentVoice = null;
+        
+        function initTextToSpeech() {
+            if (!speechSynthesis) {
+                console.warn('Text-to-speech not supported');
+                document.getElementById('autoReadToggle').disabled = true;
+                document.querySelectorAll('.response-speak-btn').forEach(btn => btn.disabled = true);
+                return;
+            }
+            
+            // Get available voices
+            speechSynthesis.onvoiceschanged = function() {
+                const voices = speechSynthesis.getVoices();
+                console.log('Available voices:', voices.length);
+            };
+            
+            // Auto-read toggle
+            document.getElementById('autoReadToggle').addEventListener('change', function() {
+                autoReadEnabled = this.checked;
+                localStorage.setItem('janSevaAutoRead', this.checked);
+            });
+            
+            // Load saved preference
+            const savedAutoRead = localStorage.getItem('janSevaAutoRead');
+            if (savedAutoRead !== null) {
+                autoReadEnabled = savedAutoRead === 'true';
+                document.getElementById('autoReadToggle').checked = autoReadEnabled;
+            }
+        }
+        
+        function speakText(text, langCode = 'hi') {
+            if (!speechSynthesis || isSpeaking) {
+                return false;
+            }
+            
+            const langMap = {
+                'hi': 'hi-IN',
+                'en': 'en-US',
+                'mr': 'mr-IN',
+                'te': 'te-IN'
+            };
+            
+            // Cancel any ongoing speech
+            speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = langMap[langCode] || 'en-US';
+            utterance.rate = 0.9;
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+            
+            // Try to find appropriate voice
+            const voices = speechSynthesis.getVoices();
+            const preferredVoice = voices.find(voice => 
+                voice.lang.startsWith(langCode) || voice.lang.includes(langCode)
+            );
+            
+            if (preferredVoice) {
+                utterance.voice = preferredVoice;
+            }
+            
+            utterance.onstart = function() {
+                isSpeaking = true;
+                document.querySelectorAll('.response-speak-btn').forEach(btn => {
+                    btn.classList.add('speaking');
+                    btn.innerHTML = '<i class="fas fa-stop"></i>';
+                });
+            };
+            
+            utterance.onend = function() {
+                isSpeaking = false;
+                document.querySelectorAll('.response-speak-btn').forEach(btn => {
+                    btn.classList.remove('speaking');
+                    btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                });
+            };
+            
+            utterance.onerror = function(event) {
+                console.error('Speech synthesis error:', event);
+                isSpeaking = false;
+                document.querySelectorAll('.response-speak-btn').forEach(btn => {
+                    btn.classList.remove('speaking');
+                    btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                });
+                showToast('Could not read text aloud. Please try again.', 'error');
+            };
+            
+            speechSynthesis.speak(utterance);
+            return true;
+        }
+        
+        function stopSpeech() {
+            if (speechSynthesis) {
+                speechSynthesis.cancel();
+                isSpeaking = false;
+                document.querySelectorAll('.response-speak-btn').forEach(btn => {
+                    btn.classList.remove('speaking');
+                    btn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                });
+            }
+        }
+        
+        function getAIResponseText() {
+            const onlineCard = document.getElementById('onlineCard');
+            const offlineCard = document.getElementById('offlineCard');
+            
+            let activeCard = null;
+            if (onlineCard && onlineCard.style.display !== 'none') {
+                activeCard = onlineCard;
+            } else if (offlineCard && offlineCard.style.display !== 'none') {
+                activeCard = offlineCard;
+            }
+            
+            if (!activeCard) return 'No AI response available.';
+            
+            // Get all text content from the card
+            const title = activeCard.querySelector('.response-header').textContent;
+            const paragraphs = Array.from(activeCard.querySelectorAll('p')).map(p => p.textContent).join(' ');
+            const steps = activeCard.querySelector('.steps-list') ? 
+                Array.from(activeCard.querySelectorAll('.steps-list li')).map(li => li.textContent).join('. ') : '';
+            const documents = activeCard.querySelector('.documents-list') ? 
+                'Required documents: ' + Array.from(activeCard.querySelectorAll('.doc-tag')).map(tag => tag.textContent).join(', ') : '';
+            
+            return `${title}. ${paragraphs}. Steps: ${steps}. ${documents}`;
+        }
+        
+        function autoReadAIResponse() {
+            if (autoReadEnabled && !isSpeaking) {
+                const responseText = getAIResponseText();
+                const activeLang = document.querySelector('.language-pill.active');
+                const langCode = activeLang ? activeLang.getAttribute('data-lang') : 'hi';
+                
+                setTimeout(() => {
+                    speakText(responseText, langCode);
+                }, 500);
+            }
+        }
+
+        // 4. LANGUAGE SUPPORT SYSTEM WITH TRANSLATIONS
+        // ============================================
+        const translations = {
+            'hi': {
+                heroTitle: 'जन सेवा साथी - सरकारी सेवाओं के लिए आपका एआई गाइड',
+                heroSubtitle: 'स्थानीय भाषा में योजना की जानकारी, दस्तावेज़ सूची और स्मार्ट टोकन प्राप्त करें। प्रतीक्षा समय कम करें, सटीक जानकारी पाएं और सेवाओं तक तेजी से पहुंचें।',
+                aiPageTitle: 'एआई सहायक',
+                inputQueryText: 'अपना प्रश्न दर्ज करें',
+                voiceButtonText: 'बोलने के लिए क्लिक करें',
+                orText: 'या',
+                speakButtonText: 'बोलें',
+                sendButtonText: 'टेक्स्ट भेजें',
+                autoReadLabel: 'एआई प्रतिक्रिया स्वतः पढ़ें:',
+                aiUnderstandingText: 'एआई समझ',
+                serviceDetectedLabel: 'सेवा पहचानी गई:',
+                userLocationLabel: 'उपयोगकर्ता स्थान:',
+                categoryLabel: 'श्रेणी:',
+                priorityLabel: 'प्राथमिकता:',
+                detectedLanguageLabel: 'पहचानी गई भाषा:',
+                onlineAvailableText: 'ऑनलाइन आवेदन उपलब्ध',
+                stepsTitle: 'चरण:',
+                requiredDocsTitle: 'आवश्यक दस्तावेज़:',
+                goToPortalText: 'आधिकारिक पोर्टल पर जाएं',
+                officeRequiredText: 'कार्यालय भ्रमण आवश्यक',
+                officeDetailsTitle: 'कार्यालय विवरण:',
+                requiredDocsTitle2: 'आवश्यक दस्तावेज़ (मूल + प्रतियां):',
+                generateTokenText: 'टोकन जनरेट करें',
+                processGuideTitle: 'प्रक्रिया मार्गदर्शिका',
+                tokenTitle: 'स्मार्ट टोकन प्रणाली',
+                tokenSubtitle: 'अब लंबी कतारों में इंतज़ार नहीं। रीयल-टाइम भीड़ की जानकारी और अनुमानित प्रतीक्षा समय के साथ निर्धारित अपॉइंटमेंट प्राप्त करें।',
+                timeSlotLabel: 'अनुमानित समय स्लॉट',
+                crowdStatusLabel: 'भीड़ की स्थिति',
+                expectedWaitLabel: 'अपेक्षित प्रतीक्षा',
+                serviceTypeLabel: 'सेवा प्रकार',
+                instructionsTitle: 'महत्वपूर्ण निर्देश',
+                downloadTokenText: 'टोकन डाउनलोड करें (PDF)',
+                saveTokenText: 'फोन पर सेव करें',
+                listenButtonText: 'एआई प्रतिक्रिया सुनें',
+                speakInsteadText: 'टाइप करने के बजाय बोलें',
+                simpleModeLabel: 'सरल मोड सक्षम करें:'
+            },
+            'en': {
+                heroTitle: 'Jan Seva Saathi – Your AI Guide for Government Services',
+                heroSubtitle: 'Get scheme info, document list, and smart tokens in your local language. Reduce wait times, get accurate information, and access services faster.',
+                aiPageTitle: 'AI Assistant',
+                inputQueryText: 'Input Your Query',
+                voiceButtonText: 'Click to Speak',
+                orText: 'OR',
+                speakButtonText: 'Speak',
+                sendButtonText: 'Send Text',
+                autoReadLabel: 'Auto Read AI Response:',
+                aiUnderstandingText: 'AI Understanding',
+                serviceDetectedLabel: 'Service Detected:',
+                userLocationLabel: 'User Location:',
+                categoryLabel: 'Category:',
+                priorityLabel: 'Priority:',
+                detectedLanguageLabel: 'Detected Language:',
+                onlineAvailableText: 'Online Application Available',
+                stepsTitle: 'Steps:',
+                requiredDocsTitle: 'Required Documents:',
+                goToPortalText: 'Go to Official Portal',
+                officeRequiredText: 'Office Visit Required',
+                officeDetailsTitle: 'Office Details:',
+                requiredDocsTitle2: 'Required Documents (Originals + Copies):',
+                generateTokenText: 'Generate Token',
+                processGuideTitle: 'Process Guide',
+                tokenTitle: 'Smart Token System',
+                tokenSubtitle: 'No more waiting in long queues. Get scheduled appointments with real-time crowd information and estimated wait times.',
+                timeSlotLabel: 'Estimated Time Slot',
+                crowdStatusLabel: 'Crowd Status',
+                expectedWaitLabel: 'Expected Wait',
+                serviceTypeLabel: 'Service Type',
+                instructionsTitle: 'Important Instructions',
+                downloadTokenText: 'Download Token (PDF)',
+                saveTokenText: 'Save on Phone',
+                listenButtonText: 'Listen to AI Response',
+                speakInsteadText: 'Speak Instead of Typing',
+                simpleModeLabel: 'Enable Simple Mode:'
+            },
+            'mr': {
+                heroTitle: 'जन सेवा साथी - सरकारी सेवांसाठी तुमचे AI मार्गदर्शक',
+                heroSubtitle: 'तुमच्या स्थानिक भाषेत योजना माहिती, दस्तऐवज यादी आणि स्मार्ट टोकन मिळवा. प्रतीक्षा वेळ कमी करा, अचूक माहिती मिळवा आणि सेवांमध्ये वेगाने प्रवेश करा.',
+                aiPageTitle: 'AI सहाय्यक',
+                inputQueryText: 'तुमची क्वेरी प्रविष्ट करा',
+                voiceButtonText: 'बोलण्यासाठी क्लिक करा',
+                orText: 'किंवा',
+                speakButtonText: 'बोला',
+                sendButtonText: 'मजकूर पाठवा',
+                autoReadLabel: 'AI प्रतिसाद स्वयं वाचा:',
+                aiUnderstandingText: 'AI समज',
+                serviceDetectedLabel: 'सेवा शोधली:',
+                userLocationLabel: 'वापरकर्ता स्थान:',
+                categoryLabel: 'श्रेणी:',
+                priorityLabel: 'प्राधान्य:',
+                detectedLanguageLabel: 'शोधलेली भाषा:',
+                onlineAvailableText: 'ऑनलाइन अर्ज उपलब्ध',
+                stepsTitle: 'चरण:',
+                requiredDocsTitle: 'आवश्यक दस्तऐवज:',
+                goToPortalText: 'अधिकृत पोर्टलवर जा',
+                officeRequiredText: 'कार्यालय भेट आवश्यक',
+                officeDetailsTitle: 'कार्यालय तपशील:',
+                requiredDocsTitle2: 'आवश्यक दस्तऐवज (मूळ + प्रती):',
+                generateTokenText: 'टोकन व्युत्पन्न करा',
+                processGuideTitle: 'प्रक्रिया मार्गदर्शिका',
+                tokenTitle: 'स्मार्ट टोकन प्रणाली',
+                tokenSubtitle: 'आता लांब रांगेत प्रतीक्षा करण्याची गरज नाही. रीयल-टाइम गर्दी माहिती आणि अंदाजे प्रतीक्षा वेळासह नियोजित भेटी मिळवा.',
+                timeSlotLabel: 'अंदाजे वेळ स्लॉट',
+                crowdStatusLabel: 'गर्दीची स्थिती',
+                expectedWaitLabel: 'अपेक्षित प्रतीक्षा',
+                serviceTypeLabel: 'सेवा प्रकार',
+                instructionsTitle: 'महत्वाच्या सूचना',
+                downloadTokenText: 'टोकन डाउनलोड करा (PDF)',
+                saveTokenText: 'फोनवर जतन करा',
+                listenButtonText: 'AI प्रतिसाद ऐका',
+                speakInsteadText: 'टाइप करण्याऐवजी बोला',
+                simpleModeLabel: 'सोपा मोड सक्षम करा:'
+            },
+            'te': {
+                heroTitle: 'జన్ సేవ సాథి - ప్రభుత్వ సేవలకు మీ AI గైడ్',
+                heroSubtitle: 'మీ స్థానిక భాషలో స్కీమ్ సమాచారం, డాక్యుమెంట్ జాబితా మరియు స్మార్ట్ టోకెన్లను పొందండి. వేచి సమయాన్ని తగ్గించండి, ఖచ్చితమైన సమాచారాన్ని పొందండి మరియు సేవలను వేగంగా యాక్సెస్ చేయండి.',
+                aiPageTitle: 'AI అసిస్టెంట్',
+                inputQueryText: 'మీ ప్రశ్నను నమోదు చేయండి',
+                voiceButtonText: 'మాట్లాడటానికి క్లిక్ చేయండి',
+                orText: 'లేదా',
+                speakButtonText: 'మాట్లాడండి',
+                sendButtonText: 'టెక్స్ట్ పంపండి',
+                autoReadLabel: 'AI ప్రతిస్పందన స్వయంచాలకంగా చదవండి:',
+                aiUnderstandingText: 'AI అవగాహన',
+                serviceDetectedLabel: 'సేవ గుర్తించబడింది:',
+                userLocationLabel: 'వినియోగదారు స్థానం:',
+                categoryLabel: 'వర్గం:',
+                priorityLabel: 'ప్రాధాన్యత:',
+                detectedLanguageLabel: 'గుర్తించిన భాష:',
+                onlineAvailableText: 'ఆన్లైన్ అప్లికేషన్ అందుబాటులో ఉంది',
+                stepsTitle: 'దశలు:',
+                requiredDocsTitle: 'అవసరమైన పత్రాలు:',
+                goToPortalText: 'అధికారిక పోర్టల్కి వెళ్లండి',
+                officeRequiredText: 'ఆఫీసు సందర్శన అవసరం',
+                officeDetailsTitle: 'ఆఫీసు వివరాలు:',
+                requiredDocsTitle2: 'అవసరమైన పత్రాలు (అసలు + కాపీలు):',
+                generateTokenText: 'టోకెన్ జనరేట్ చేయండి',
+                processGuideTitle: 'ప్రక్రియ గైడ్',
+                tokenTitle: 'స్మార్ట్ టోకెన్ సిస్టమ్',
+                tokenSubtitle: 'ఇక ముందు పొడవాటి క్యూలలో వేచి ఉండవలసిన అవసరం లేదు. రియల్-టైమ్ గుంపు సమాచారం మరియు అంచనా వేసిన వేచి సమయంతో షెడ్యూల్ చేసిన అపాయింట్మెంట్లను పొందండి.',
+                timeSlotLabel: 'అంచనా సమయ స్లాట్',
+                crowdStatusLabel: 'గుంపు స్థితి',
+                expectedWaitLabel: 'అంచనా వేచి సమయం',
+                serviceTypeLabel: 'సేవ రకం',
+                instructionsTitle: 'ముఖ్యమైన సూచనలు',
+                downloadTokenText: 'టోకెన్ డౌన్లోడ్ చేయండి (PDF)',
+                saveTokenText: 'ఫోన్లో సేవ్ చేయండి',
+                listenButtonText: 'AI ప్రతిస్పందన వినండి',
+                speakInsteadText: 'టైప్ చేయడానికి బదులుగా మాట్లాడండి',
+                simpleModeLabel: 'సాధారణ మోడ్ ప్రారంభించండి:'
+            }
+        };
+        
+        function initLanguageSupport() {
+            const languagePills = document.querySelectorAll('.language-pill');
+            const languageOptions = document.querySelectorAll('.language-option');
+            
+            // Language pills (header)
+            languagePills.forEach(pill => {
+                pill.addEventListener('click', function() {
+                    const langCode = this.getAttribute('data-lang');
+                    changeLanguage(langCode);
+                });
+            });
+            
+            // Language options (accessibility page)
+            languageOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const langCode = this.getAttribute('data-lang');
+                    changeLanguage(langCode);
+                });
+            });
+            
+            // Load saved language
+            const savedLang = localStorage.getItem('janSevaLanguage') || 'hi';
+            changeLanguage(savedLang);
+        }
+        
+        function changeLanguage(langCode) {
+            // Update active language pill
+            document.querySelectorAll('.language-pill').forEach(pill => {
+                pill.classList.remove('active');
+                pill.setAttribute('aria-selected', 'false');
+            });
+            
+            const activePill = document.querySelector(`.language-pill[data-lang="${langCode}"]`);
+            if (activePill) {
+                activePill.classList.add('active');
+                activePill.setAttribute('aria-selected', 'true');
+            }
+            
+            // Update active language option
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            const activeOption = document.querySelector(`.language-option[data-lang="${langCode}"]`);
+            if (activeOption) {
+                activeOption.classList.add('active');
+            }
+            
+            // Update speech recognition language
+            setSpeechRecognitionLanguage(langCode);
+            
+            // Update UI content language
+            updateLanguageContent(langCode);
+            
+            // Update detected language display
+            const langNames = {
+                'hi': 'Hindi',
+                'en': 'English',
+                'mr': 'Marathi',
+                'te': 'Telugu'
+            };
+            document.getElementById('detectedLanguageValue').textContent = langNames[langCode] || 'English';
+            
+            // Save preference
+            localStorage.setItem('janSevaLanguage', langCode);
+            
+            // Show notification
+            showToast(`Language changed to ${langNames[langCode] || 'English'}`, 'success');
+        }
+        
+        function updateLanguageContent(langCode) {
+            const translation = translations[langCode] || translations['en'];
+            
+            // Update all elements with translations
+            Object.keys(translation).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translation[key];
+                    } else {
+                        element.textContent = translation[key];
+                    }
+                }
+            });
+        }
+
+        // 5. PROCESS GUIDE - Auto Tab Switching
+        // ============================================
+        function initProcessGuide() {
+            const processTabs = document.querySelectorAll('.process-tab');
+            const tabContents = document.querySelectorAll('.process-tab-content');
+            
+            processTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Update ARIA attributes
+                    processTabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                    });
+                    this.classList.add('active');
+                    this.setAttribute('aria-selected', 'true');
+                    
+                    // Show corresponding content
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        content.setAttribute('hidden', 'true');
+                        if (content.id === tabId + 'Process') {
+                            content.classList.add('active');
+                            content.removeAttribute('hidden');
+                        }
+                    });
+                });
+            });
+        }
+        
+        function autoSwitchProcessTab(serviceType) {
+            const tabMap = {
+                'online': 'online',
+                'offline': 'offline',
+                'hybrid': 'hybrid'
+            };
+            
+            const tabId = tabMap[serviceType] || 'online';
+            const tabToClick = document.querySelector(`.process-tab[data-tab="${tabId}"]`);
+            
+            if (tabToClick) {
+                tabToClick.click();
+            }
+        }
+
+        // 6. SCHEME ELIGIBILITY CHECKER IMPROVED
+        // ============================================
+        const schemeEligibilityData = {
+            'Ayushman Bharat': {
+                minAge: 0,
+                maxAge: 120,
+                income: ['low', 'medium'],
+                categories: ['general', 'obc', 'sc', 'st'],
+                states: ['chhattisgarh', 'maharashtra', 'delhi', 'karnataka', 'tamilnadu'],
+                matchScore: 0,
+                description: 'Health insurance scheme providing coverage of ₹5 lakh per family per year for secondary and tertiary care hospitalization.',
+                documents: ['Aadhaar Card', 'Ration Card', 'Income Certificate'],
+                link: 'https://pmjay.gov.in'
+            },
+            'PM Awas Yojana': {
+                minAge: 18,
+                maxAge: 120,
+                income: ['low', 'medium'],
+                categories: ['general', 'obc', 'sc', 'st'],
+                states: ['chhattisgarh', 'maharashtra', 'delhi'],
+                matchScore: 0,
+                description: 'Housing for All by 2022 mission. Provides financial assistance for construction of pucca house.',
+                documents: ['Aadhaar Card', 'Land Proof', 'Bank Account', 'Income Certificate'],
+                link: 'https://pmaymis.gov.in'
+            },
+            'PM Kisan Samman': {
+                minAge: 18,
+                maxAge: 120,
+                income: ['low', 'medium'],
+                categories: ['general', 'obc', 'sc', 'st'],
+                states: ['chhattisgarh', 'maharashtra', 'delhi', 'karnataka', 'tamilnadu'],
+                matchScore: 0,
+                description: 'Income support scheme for farmers providing ₹6,000 per year in three equal installments.',
+                documents: ['Aadhaar Card', 'Land Records', 'Bank Account'],
+                link: 'https://pmkisan.gov.in'
+            },
+            'Student Scholarship': {
+                minAge: 15,
+                maxAge: 25,
+                income: ['low', 'medium'],
+                categories: ['obc', 'sc', 'st'],
+                states: ['chhattisgarh', 'maharashtra', 'delhi', 'karnataka', 'tamilnadu'],
+                matchScore: 0,
+                description: 'Post-matric scholarship for OBC/SC/ST students to continue higher education.',
+                documents: ['Caste Certificate', 'Income Certificate', 'Previous Marksheet'],
+                link: 'https://scholarships.gov.in'
+            },
+            'Old Age Pension': {
+                minAge: 60,
+                maxAge: 120,
+                income: ['low'],
+                categories: ['general', 'obc', 'sc', 'st'],
+                states: ['chhattisgarh', 'maharashtra', 'delhi'],
+                matchScore: 0,
+                description: 'Financial assistance of ₹300-1000 per month for senior citizens belonging to BPL category.',
+                documents: ['Aadhaar Card', 'Age Proof', 'Income Certificate', 'Bank Account'],
+                link: 'https://nsap.nic.in'
+            }
+        };
+        
+        function checkEligibility() {
+            const age = parseInt(document.getElementById('ageInput').value) || 0;
+            const income = document.getElementById('incomeInput').value;
+            const category = document.getElementById('categoryInput').value;
+            const state = document.getElementById('stateInput').value;
+            
+            if (!age || !income || !category || !state) {
+                showToast('Please fill all fields to check eligibility.', 'warning');
+                return;
+            }
+            
+            // Show loading state
+            const checkBtn = document.getElementById('checkEligibilityBtn');
+            const originalText = checkBtn.innerHTML;
+            checkBtn.innerHTML = '<span class="loading-spinner"></span> Checking...';
+            checkBtn.disabled = true;
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Calculate match scores
+                Object.keys(schemeEligibilityData).forEach(scheme => {
+                    let score = 0;
+                    const data = schemeEligibilityData[scheme];
+                    
+                    // Age check (30 points)
+                    if (age >= data.minAge && age <= data.maxAge) {
+                        score += 30;
+                    }
+                    
+                    // Income check (25 points)
+                    if (data.income.includes(income)) {
+                        score += 25;
+                    }
+                    
+                    // Category check (25 points)
+                    if (data.categories.includes(category)) {
+                        score += 25;
+                    }
+                    
+                    // State check (20 points)
+                    if (data.states.includes(state)) {
+                        score += 20;
+                    }
+                    
+                    data.matchScore = score;
+                });
+                
+                // Display results
+                displayEligibleSchemes();
+                
+                // Restore button
+                checkBtn.innerHTML = originalText;
+                checkBtn.disabled = false;
+                
+                showToast('Eligibility check completed! Found ' + 
+                    Object.keys(schemeEligibilityData).filter(s => schemeEligibilityData[s].matchScore > 50).length + 
+                    ' eligible schemes.', 'success');
+            }, 1500);
+        }
+        
+        function displayEligibleSchemes() {
+            const container = document.getElementById('eligibleSchemesGrid');
+            container.innerHTML = '';
+            
+            // Sort schemes by match score
+            const sortedSchemes = Object.keys(schemeEligibilityData)
+                .map(scheme => ({ name: scheme, ...schemeEligibilityData[scheme] }))
+                .sort((a, b) => b.matchScore - a.matchScore)
+                .filter(scheme => scheme.matchScore > 50);
+            
+            if (sortedSchemes.length === 0) {
+                container.innerHTML = '<p style="color: var(--dark-gray); text-align: center; padding: 20px;">No eligible schemes found based on your profile. Try adjusting your criteria.</p>';
+            } else {
+                sortedSchemes.forEach(scheme => {
+                    const matchClass = scheme.matchScore >= 80 ? 'match-high' : 
+                                      scheme.matchScore >= 60 ? 'match-medium' : 'match-low';
+                    
+                    const card = document.createElement('div');
+                    card.className = 'eligible-scheme-card';
+                    card.innerHTML = `
+                        <span class="match-percentage ${matchClass}">${scheme.matchScore}% Match</span>
+                        <h4 style="color: var(--primary-blue); margin-bottom: 8px;">${scheme.name}</h4>
+                        <p style="font-size: 14px; color: var(--dark-gray); margin-bottom: 10px;">
+                            ${scheme.description}
+                        </p>
+                        <div style="font-size: 12px; color: var(--dark-gray); margin-bottom: 10px;">
+                            <div><strong>Age:</strong> ${scheme.minAge}-${scheme.maxAge} years</div>
+                            <div><strong>Documents:</strong> ${scheme.documents.join(', ')}</div>
+                        </div>
+                        <button class="btn-action btn-send" onclick="applyForScheme('${scheme.name}')" style="width: 100%; padding: 8px;">
+                            <i class="fas fa-arrow-right"></i> Apply Now
+                        </button>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+            
+            document.getElementById('recommendedSchemes').style.display = 'block';
+        }
+        
+        function applyForScheme(schemeName) {
+            const scheme = schemeEligibilityData[schemeName];
+            if (scheme && scheme.link) {
+                showToast(`Redirecting to ${schemeName} application portal...`, 'success');
+                setTimeout(() => {
+                    window.open(scheme.link, '_blank');
+                }, 1000);
+            } else {
+                showToast('Application link not available. Please visit the official government portal.', 'warning');
+            }
+        }
+
+        // 7. COMPLETE PRODUCT FLOW INTEGRATION
+        // ============================================
+        const serviceDecisionMatrix = {
+            'online': {
+                services: ['ration card', 'pan card', 'aadhaar update', 'voter id', 'passport application', 'driving license renewal', 'electricity bill', 'water bill', 'property tax', 'pm awas yojana', 'ayushman bharat', 'pension registration'],
+                priority: 'Recommended by AI'
+            },
+            'offline': {
+                services: ['caste certificate', 'income certificate', 'domicile certificate', 'birth certificate', 'death certificate', 'marriage certificate', 'land mutation', 'court case', 'police verification'],
+                priority: 'Office Visit Required'
+            },
+            'hybrid': {
+                services: ['new driving license', 'vehicle registration', 'business registration', 'gst registration'],
+                priority: 'Start Online, Finish in Office'
+            }
+        };
+
+        function determineServicePath(userQuery) {
+            const queryLower = userQuery.toLowerCase();
+            let detectedService = '';
+            let serviceType = 'online';
+            
+            for (const [type, data] of Object.entries(serviceDecisionMatrix)) {
+                for (const service of data.services) {
+                    if (queryLower.includes(service)) {
+                        detectedService = service;
+                        serviceType = type;
+                        break;
+                    }
+                }
+                if (detectedService) break;
+            }
+            
+            if (!detectedService) {
+                if (queryLower.includes('certificate') || queryLower.includes('mutation') || queryLower.includes('verification')) {
+                    serviceType = 'offline';
+                    detectedService = 'Document Certificate';
+                } else if (queryLower.includes('bill') || queryLower.includes('renewal') || queryLower.includes('update')) {
+                    serviceType = 'online';
+                    detectedService = 'Online Service';
+                } else {
+                    detectedService = 'Government Service';
+                }
+            }
+            
+            return { serviceType, detectedService };
+        }
+        
+        function processUserQuery(query) {
+            // Show AI thinking
+            showAIThinking().then(() => {
+                // Determine service path
+                const { serviceType, detectedService } = determineServicePath(query);
+                
+                // Update context
+                updateContext(query, serviceType, detectedService);
+                
+                // Update AI response cards
+                updateAIResponseCards(serviceType, detectedService);
+                
+                // Update display values
+                document.getElementById('serviceDetectedValue').textContent = detectedService;
+                document.getElementById('categoryValue').textContent = serviceType === 'online' ? 'Online Service' : 'Office Service';
+                document.getElementById('priorityValue').textContent = serviceDecisionMatrix[serviceType]?.priority || 'Normal';
+                
+                // Auto-switch process guide tab
+                autoSwitchProcessTab(serviceType);
+                
+                // Auto-read AI response if enabled
+                setTimeout(() => {
+                    autoReadAIResponse();
+                }, 1000);
+                
+                // If offline service, show token generation option
+                if (serviceType === 'offline') {
+                    document.getElementById('generateTokenBtn').style.display = 'flex';
+                } else {
+                    document.getElementById('generateTokenBtn').style.display = 'none';
+                }
+                
+                // Save to history
+                saveToHistory(query, serviceType, detectedService);
+            });
+        }
+
+        // 8. LOCAL STORAGE AND DATA PERSISTENCE
+        // ============================================
+        function initLocalStorage() {
+            // Initialize default values if not present
+            if (!localStorage.getItem('janSevaLanguage')) {
+                localStorage.setItem('janSevaLanguage', 'hi');
+            }
+            if (!localStorage.getItem('janSevaAutoRead')) {
+                localStorage.setItem('janSevaAutoRead', 'true');
+            }
+            if (!localStorage.getItem('janSevaTheme')) {
+                localStorage.setItem('janSevaTheme', 'light');
+            }
+            if (!localStorage.getItem('janSevaHistory')) {
+                localStorage.setItem('janSevaHistory', JSON.stringify([]));
+            }
+            if (!localStorage.getItem('janSevaProfile')) {
+                localStorage.setItem('janSevaProfile', JSON.stringify({
+                    name: 'Rajesh Kumar',
+                    age: 42,
+                    district: 'Raipur',
+                    state: 'Chhattisgarh',
+                    category: 'General',
+                    income: '3,00,000 - 5,00,000'
+                }));
+            }
+        }
+        
+        function loadSavedData() {
+            // Load profile
+            const savedProfile = JSON.parse(localStorage.getItem('janSevaProfile') || '{}');
+            if (savedProfile.name) {
+                document.getElementById('fullName').value = savedProfile.name;
+                document.getElementById('profileAge').value = savedProfile.age;
+                document.getElementById('district').value = savedProfile.district;
+                document.getElementById('state').value = savedProfile.state;
+                document.getElementById('profileCategory').value = savedProfile.category;
+                document.getElementById('profileIncome').value = savedProfile.income;
+                
+                // Also update eligibility checker
+                document.getElementById('ageInput').value = savedProfile.age;
+                document.getElementById('incomeInput').value = savedProfile.income.toLowerCase().includes('low') ? 'low' : 
+                    savedProfile.income.includes('3,00,000') ? 'high' : 'medium';
+                document.getElementById('categoryInput').value = savedProfile.category.toLowerCase();
+            }
+        }
+        
+        function saveProfile() {
+            const profile = {
+                name: document.getElementById('fullName').value,
+                age: document.getElementById('profileAge').value,
+                district: document.getElementById('district').value,
+                state: document.getElementById('state').value,
+                category: document.getElementById('profileCategory').value,
+                income: document.getElementById('profileIncome').value
+            };
+            
+            localStorage.setItem('janSevaProfile', JSON.stringify(profile));
+            showToast('Profile saved successfully!', 'success');
+        }
+        
+        function saveToHistory(query, serviceType, service) {
+            const history = JSON.parse(localStorage.getItem('janSevaHistory') || '[]');
+            history.unshift({
+                query,
+                serviceType,
+                service,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Keep only last 10 items
+            if (history.length > 10) {
+                history.pop();
+            }
+            
+            localStorage.setItem('janSevaHistory', JSON.stringify(history));
+        }
+
+        // 9. THEME MANAGEMENT (DARK/LIGHT MODE)
+        // ============================================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('janSevaTheme') || 'light';
+            setTheme(savedTheme);
+            
+            // Update theme icon
+            updateThemeIcon(savedTheme);
+        }
+        
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            setTheme(newTheme);
+            updateThemeIcon(newTheme);
+            localStorage.setItem('janSevaTheme', newTheme);
+            
+            showToast(`${newTheme === 'dark' ? 'Dark' : 'Light'} mode enabled`, 'success');
+        }
+        
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+        }
+        
+        function updateThemeIcon(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            if (theme === 'dark') {
+                themeIcon.className = 'fas fa-sun';
+                themeIcon.setAttribute('title', 'Switch to light mode');
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeIcon.setAttribute('title', 'Switch to dark mode');
+            }
+        }
+
+        // 10. UI COMPONENTS AND UTILITIES
+        // ============================================
+        // Toast notification system
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = 'toast';
+            toast.classList.add(type);
+            
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.className = 'toast';
+                }, 300);
+            }, 5000);
+        }
+        
+        // Menu toggle for mobile
+        function toggleMenu() {
+            const menu = document.querySelector('.nav-menu');
+            menu.classList.toggle('show');
+            
+            // Update hamburger icon
+            const hamburgerIcon = document.querySelector('.hamburger-menu i');
+            if (menu.classList.contains('show')) {
+                hamburgerIcon.className = 'fas fa-times';
+            } else {
+                hamburgerIcon.className = 'fas fa-bars';
+            }
+        }
+        
+        // Page navigation system
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // Hide all pages
+            pages.forEach(page => {
+                page.classList.remove('active');
+                page.setAttribute('hidden', 'true');
+            });
+            
+            // Show selected page
+            const activePage = document.getElementById(pageId);
+            if (activePage) {
+                activePage.classList.add('active');
+                activePage.removeAttribute('hidden');
+            }
+            
+            // Update active nav link
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Close mobile menu if open
+            const menu = document.querySelector('.nav-menu');
+            if (menu.classList.contains('show')) {
+                toggleMenu();
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Update page title
+            document.title = `Jan Seva Saathi - ${pageId.charAt(0).toUpperCase() + pageId.slice(1)}`;
+        }
+        
+        // Scheme detail modal
+        function showSchemeDetail(schemeKey) {
+            const schemeDetails = {
+                health: {
+                    title: 'Health Schemes',
+                    description: 'Various health insurance and medical assistance schemes provided by central and state governments.',
+                    schemes: [
+                        'Ayushman Bharat - ₹5 lakh health insurance',
+                        'PM Jan Arogya Yojana - Cashless treatment',
+                        'Rashtriya Swasthya Bima Yojana - Health insurance for BPL families',
+                        'State Health Schemes - Varies by state'
+                    ],
+                    eligibility: 'Based on income, age, and category',
+                    documents: ['Aadhaar Card', 'Income Certificate', 'Ration Card', 'Bank Account']
+                },
+                education: {
+                    title: 'Education Schemes',
+                    description: 'Scholarships, mid-day meals, and educational support for students from various backgrounds.',
+                    schemes: [
+                        'Post-Matric Scholarship for SC/ST/OBC',
+                        'Mid-Day Meal Scheme',
+                        'Free Textbook Distribution',
+                        'National Means-cum-Merit Scholarship',
+                        'PM Scholarship Scheme for RPF/RPSF'
+                    ],
+                    eligibility: 'Based on caste, income, and academic performance',
+                    documents: ['Caste Certificate', 'Income Certificate', 'Marksheet', 'Bank Account']
+                },
+                pension: {
+                    title: 'Pension Schemes',
+                    description: 'Financial assistance for senior citizens, widows, and disabled persons.',
+                    schemes: [
+                        'Indira Gandhi National Old Age Pension',
+                        'National Widow Pension Scheme',
+                        'National Disability Pension Scheme',
+                        'Atal Pension Yojana'
+                    ],
+                    eligibility: 'Age 60+ for old age, 40-59 for widow, 18+ with disability',
+                    documents: ['Aadhaar Card', 'Age Proof', 'Income Certificate', 'Disability Certificate']
+                },
+                ration: {
+                    title: 'Ration & Food Security',
+                    description: 'Food grains at subsidized rates through Public Distribution System.',
+                    schemes: [
+                        'National Food Security Act (NFSA)',
+                        'PM Garib Kalyan Anna Yojana',
+                        'One Nation One Ration Card',
+                        'Antyodaya Anna Yojana'
+                    ],
+                    eligibility: 'Based on income and family size',
+                    documents: ['Aadhaar Card', 'Address Proof', 'Income Certificate', 'Ration Card']
+                },
+                certificates: {
+                    title: 'Certificates & Documents',
+                    description: 'Various certificates required for availing government schemes and services.',
+                    schemes: [
+                        'Birth & Death Certificate',
+                        'Income Certificate',
+                        'Caste Certificate',
+                        'Domicile Certificate',
+                        'Marriage Certificate'
+                    ],
+                    eligibility: 'All citizens requiring official documents',
+                    documents: ['Aadhaar Card', 'Proof of Birth/Event', 'Address Proof', 'Affidavits']
+                },
+                employment: {
+                    title: 'Employment & Skill Development',
+                    description: 'Job guarantee, skill training, and entrepreneurship support schemes.',
+                    schemes: [
+                        'Mahatma Gandhi NREGA - 100 days employment',
+                        'PM Kaushal Vikas Yojana - Skill training',
+                        'Startup India - Entrepreneurship support',
+                        'PM Employment Generation Programme'
+                    ],
+                    eligibility: 'Based on age, education, and employment status',
+                    documents: ['Aadhaar Card', 'Educational Certificates', 'PAN Card', 'Business Proof']
+                }
+            };
+            
+            const detail = schemeDetails[schemeKey];
+            if (!detail) return;
+            
+            const modalContent = `
+                <div class="modal-content">
+                    <h2 style="color: var(--primary-blue); margin-bottom: 20px;">
+                        <i class="fas fa-info-circle"></i> ${detail.title}
+                    </h2>
+                    <p style="margin-bottom: 20px; color: var(--dark-gray);">${detail.description}</p>
+                    
+                    <h4 style="color: var(--secondary-blue); margin-bottom: 10px;">Available Schemes:</h4>
+                    <ul style="margin-bottom: 20px; padding-left: 20px;">
+                        ${detail.schemes.map(scheme => `<li>${scheme}</li>`).join('')}
+                    </ul>
+                    
+                    <h4 style="color: var(--secondary-blue); margin-bottom: 10px;">Eligibility:</h4>
+                    <p style="margin-bottom: 20px; color: var(--dark-gray);">${detail.eligibility}</p>
+                    
+                    <h4 style="color: var(--secondary-blue); margin-bottom: 10px;">Common Documents Required:</h4>
+                    <div class="documents-list" style="margin-bottom: 30px;">
+                        ${detail.documents.map(doc => `<div class="doc-tag">${doc}</div>`).join('')}
+                    </div>
+                    
+                    <div class="response-actions">
+                        <button class="btn-action btn-send" onclick="showPage('ai-assistant')">
+                            <i class="fas fa-robot"></i> Ask AI Assistant
+                        </button>
+                        <button class="btn-action btn-speak" onclick="document.querySelector('.modal-overlay').style.display = 'none'">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Create or update modal
+            let modal = document.querySelector('.modal-overlay:not(#feedbackModal)');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.className = 'modal-overlay';
+                modal.onclick = function(e) {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                };
+                document.body.appendChild(modal);
+            }
+            
+            modal.innerHTML = modalContent;
+            modal.style.display = 'flex';
+        }
+        
+        // Feedback modal
+        function showFeedbackModal() {
+            document.getElementById('feedbackModal').style.display = 'flex';
+        }
+        
+        function closeFeedbackModal() {
+            document.getElementById('feedbackModal').style.display = 'none';
+        }
+        
+        function setRating(rating) {
+            // Visual feedback for rating selection
+            const buttons = document.querySelectorAll('#feedbackModal .btn-action');
+            buttons.forEach((btn, index) => {
+                if (index < rating) {
+                    btn.style.background = 'var(--accent-gold)';
+                    btn.style.color = 'var(--text-dark)';
+                } else {
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }
+            });
+        }
+        
+        function submitFeedback() {
+            const feedback = document.getElementById('feedbackText').value;
+            if (!feedback.trim()) {
+                showToast('Please enter your feedback', 'warning');
+                return;
+            }
+            
+            // Simulate submission
+            const submitBtn = document.querySelector('#feedbackModal .btn-action');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="loading-spinner"></span> Submitting...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                showToast('Thank you for your feedback! We will use it to improve our services.', 'success');
+                closeFeedbackModal();
+                document.getElementById('feedbackText').value = '';
+                
+                // Reset rating buttons
+                const buttons = document.querySelectorAll('#feedbackModal .btn-action');
+                buttons.forEach(btn => {
+                    btn.style.background = '';
+                    btn.style.color = '';
+                });
+                
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        }
+
+        // 11. SETUP EVENT LISTENERS
+        // ============================================
+        function setupEventListeners() {
+            // Voice input button
+            document.getElementById('voiceInputBtn').addEventListener('click', toggleVoiceInput);
+            
+            // Send text button
+            document.getElementById('sendTextButton').addEventListener('click', function() {
+                const query = document.getElementById('textInputArea').value.trim();
+                if (query) {
+                    processUserQuery(query);
+                } else {
+                    showToast('Please enter a query or use voice input', 'warning');
+                }
+            });
+            
+            // Speak buttons on response cards
+            document.getElementById('onlineSpeakBtn').addEventListener('click', function() {
+                const responseText = getAIResponseText();
+                const activeLang = document.querySelector('.language-pill.active');
+                const langCode = activeLang ? activeLang.getAttribute('data-lang') : 'hi';
+                speakText(responseText, langCode);
+            });
+            
+            document.getElementById('offlineSpeakBtn').addEventListener('click', function() {
+                const responseText = getAIResponseText();
+                const activeLang = document.querySelector('.language-pill.active');
+                const langCode = activeLang ? activeLang.getAttribute('data-lang') : 'hi';
+                speakText(responseText, langCode);
+            });
+            
+            // Generate token button
+            document.getElementById('generateTokenBtn').addEventListener('click', function() {
+                const userQuery = document.getElementById('textInputArea').value || 'Government Service Request';
+                const { serviceType, detectedService } = determineServicePath(userQuery);
+                
+                const tokenData = generateSmartToken(serviceType, userQuery);
+                navigateToTokenPage(tokenData);
+            });
+            
+            // Eligibility checker button
+            document.getElementById('checkEligibilityBtn').addEventListener('click', checkEligibility);
+            
+            // Voice profile button
+            document.getElementById('voiceProfileBtn').addEventListener('click', function() {
+                showPage('ai-assistant');
+                setTimeout(() => {
+                    document.getElementById('voiceInputBtn').click();
+                }, 500);
+            });
+            
+            // Navigation links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    showPage(pageId);
+                });
+            });
+            
+            // Home page CTA buttons
+            document.getElementById('talkToAI').addEventListener('click', function() {
+                showPage('ai-assistant');
+                document.getElementById('voiceInputBtn').focus();
+            });
+            
+            document.getElementById('startWithText').addEventListener('click', function() {
+                showPage('ai-assistant');
+                document.getElementById('textInputArea').focus();
+            });
+            
+            // Token download and save
+            document.getElementById('downloadTokenBtn').addEventListener('click', function() {
+                showToast('Token downloaded as PDF. Check your downloads folder.', 'success');
+            });
+            
+            document.getElementById('saveTokenBtn').addEventListener('click', function() {
+                showToast('Token saved to your device. You can now show it at the office.', 'success');
+            });
+            
+            // Profile save
+            document.getElementById('profileForm').addEventListener('change', function() {
+                // Auto-save profile after 2 seconds of no changes
+                clearTimeout(window.profileSaveTimeout);
+                window.profileSaveTimeout = setTimeout(saveProfile, 2000);
+            });
+            
+            // Simple mode toggle
+            document.getElementById('simpleModeToggle').addEventListener('change', function() {
+                if (this.checked) {
+                    document.body.classList.add('simple-mode');
+                    showToast('Simple mode enabled with larger text and buttons', 'success');
+                } else {
+                    document.body.classList.remove('simple-mode');
+                    showToast('Simple mode disabled', 'success');
+                }
+            });
+            
+            // Listen to AI button
+            document.getElementById('listenToAI').addEventListener('click', function() {
+                const responseText = getAIResponseText();
+                const activeLang = document.querySelector('.language-pill.active');
+                const langCode = activeLang ? activeLang.getAttribute('data-lang') : 'hi';
+                speakText(responseText, langCode);
+            });
+            
+            // Speak instead button
+            document.getElementById('speakInstead').addEventListener('click', function() {
+                showPage('ai-assistant');
+                setTimeout(() => {
+                    document.getElementById('voiceInputBtn').click();
+                }, 500);
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+Shift+L to toggle language
+                if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+                    e.preventDefault();
+                    const currentLang = localStorage.getItem('janSevaLanguage') || 'hi';
+                    const langs = ['hi', 'en', 'mr', 'te'];
+                    const currentIndex = langs.indexOf(currentLang);
+                    const nextLang = langs[(currentIndex + 1) % langs.length];
+                    changeLanguage(nextLang);
+                }
+                
+                // Ctrl+Shift+T to toggle theme
+                if (e.ctrlKey && e.shiftKey && e.key === 'T') {
+                    e.preventDefault();
+                    toggleTheme();
+                }
+                
+                // Escape to close modals
+                if (e.key === 'Escape') {
+                    const modals = document.querySelectorAll('.modal-overlay');
+                    modals.forEach(modal => {
+                        if (modal.style.display === 'flex') {
+                            modal.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        }
+
+        // 12. EXISTING HELPER FUNCTIONS (PRESERVED)
+        // ============================================
+        let conversationContext = {
+            lastQuery: '',
+            lastService: '',
+            lastDecision: '',
+            history: []
+        };
+
+        function updateContext(userQuery, serviceType, detectedService) {
+            conversationContext.lastQuery = userQuery;
+            conversationContext.lastService = detectedService;
+            conversationContext.lastDecision = serviceType;
+            conversationContext.history.push({
+                query: userQuery,
+                service: detectedService,
+                decision: serviceType,
+                timestamp: new Date().toISOString()
+            });
+            
+            if (conversationContext.history.length > 5) {
+                conversationContext.history.shift();
+            }
+        }
+
+        function updateAIResponseCards(serviceType, detectedService) {
+            const onlineCard = document.getElementById('onlineCard');
+            const offlineCard = document.getElementById('offlineCard');
+            
+            if (!onlineCard || !offlineCard) return;
+            
+            onlineCard.style.display = 'block';
+            offlineCard.style.display = 'block';
+            
+            document.querySelectorAll('.ai-badge').forEach(badge => badge.remove());
+            
+            if (serviceType === 'online') {
+                offlineCard.style.display = 'none';
+                const badge = document.createElement('span');
+                badge.className = 'ai-badge';
+                badge.innerHTML = '✅ <strong>AI RECOMMENDED</strong> - Fastest Option';
+                onlineCard.querySelector('.response-header').appendChild(badge);
+                
+            } else if (serviceType === 'offline') {
+                onlineCard.style.display = 'none';
+                const badge = document.createElement('span');
+                badge.className = 'ai-badge';
+                badge.innerHTML = '🏛️ <strong>OFFICE VISIT REQUIRED</strong>';
+                offlineCard.querySelector('.response-header').appendChild(badge);
+                
+            } else if (serviceType === 'hybrid') {
+                const badge = document.createElement('span');
+                badge.className = 'ai-badge';
+                badge.innerHTML = '⚡ <strong>HYBRID PROCESS</strong>';
+                
+                onlineCard.querySelector('.response-header').appendChild(badge.cloneNode(true));
+                offlineCard.querySelector('.response-header').appendChild(badge.cloneNode(true));
+            }
+        }
+
+        function showAIThinking() {
+            const aiAnalysisPanel = document.getElementById('aiAnalysisPanel');
+            if (!aiAnalysisPanel) return Promise.resolve();
+            
+            const thinkingOverlay = document.createElement('div');
+            thinkingOverlay.id = 'aiThinkingOverlay';
+            thinkingOverlay.style.cssText = `
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.9);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                z-index: 100;
+                border-radius: 15px;
+                backdrop-filter: blur(5px);
+            `;
+            
+            thinkingOverlay.innerHTML = `
+                <div style="font-size: 48px; margin-bottom: 20px; animation: float 2s ease-in-out infinite;">🤖</div>
+                <h3 style="color: var(--primary-blue); margin-bottom: 10px;">AI is analyzing your request...</h3>
+                <p style="color: var(--dark-gray); text-align: center; max-width: 300px;">Understanding your query<br>Checking eligibility<br>Finding best solution</p>
+                <div class="thinking-dots" style="margin-top: 20px;">
+                    <span style="animation: dot1 1.5s infinite; font-size: 24px;">.</span>
+                    <span style="animation: dot2 1.5s infinite; font-size: 24px;">.</span>
+                    <span style="animation: dot3 1.5s infinite; font-size: 24px;">.</span>
+                </div>
+            `;
+            
+            aiAnalysisPanel.style.position = 'relative';
+            aiAnalysisPanel.appendChild(thinkingOverlay);
+            
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    if (thinkingOverlay.parentNode) {
+                        thinkingOverlay.parentNode.removeChild(thinkingOverlay);
+                    }
+                    resolve();
+                }, 1500 + Math.random() * 1000);
+            });
+        }
+
+        let generatedTokenData = null;
+
+        function generateSmartToken(serviceType, userQuery) {
+            const tokenNumber = 'JS-' + Math.floor(1000 + Math.random() * 9000);
+            const offices = [
+                'Tehsil Office, Raipur',
+                'Municipal Corporation, Delhi',
+                'District Collectorate, Mumbai',
+                'CSC Center, Bangalore',
+                'Gram Panchayat Office, Pune'
+            ];
+            const times = ['9:30 AM', '11:00 AM', '2:15 PM', '3:45 PM', '4:30 PM'];
+            const crowds = ['🟢 Low Crowd', '🟡 Medium Crowd', '🔴 High Crowd'];
+            
+            generatedTokenData = {
+                tokenNumber: tokenNumber,
+                office: offices[Math.floor(Math.random() * offices.length)],
+                timeSlot: times[Math.floor(Math.random() * times.length)],
+                crowdStatus: crowds[Math.floor(Math.random() * crowds.length)],
+                service: userQuery.substring(0, 30) + (userQuery.length > 30 ? '...' : ''),
+                date: new Date().toLocaleDateString('en-IN', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                }),
+                estimatedWait: Math.floor(Math.random() * 30) + 5 + ' minutes'
+            };
+            
+            return generatedTokenData;
+        }
+
+        function navigateToTokenPage(tokenData) {
+            showPage('token-system');
+            
+            setTimeout(() => {
+                updateTokenCard(tokenData);
+                animateTokenGeneration();
+                showToast('Smart token generated successfully!', 'success');
+            }, 500);
+        }
+
+        function updateTokenCard(tokenData) {
+            const tokenCard = document.getElementById('tokenCard');
+            if (!tokenCard || !tokenData) return;
+            
+            document.getElementById('tokenNumber').textContent = tokenData.tokenNumber;
+            document.getElementById('tokenOffice').textContent = tokenData.office;
+            document.getElementById('timeSlotValue').textContent = `${tokenData.timeSlot} – ${tokenData.date}`;
+            document.getElementById('crowdStatus').textContent = tokenData.crowdStatus;
+            document.getElementById('expectedWaitValue').textContent = tokenData.estimatedWait;
+            document.getElementById('serviceTypeValue').textContent = tokenData.service;
+            
+            const crowdClass = tokenData.crowdStatus.includes('Low') ? 'status-low' : 
+                              tokenData.crowdStatus.includes('Medium') ? 'status-medium' : 'status-high';
+            document.getElementById('crowdStatus').className = crowdClass;
+            
+            // Remove existing success message if present
+            const existingMsg = tokenCard.querySelector('.token-success-msg');
+            if (existingMsg) {
+                existingMsg.remove();
+            }
+            
+            const successMsg = document.createElement('div');
+            successMsg.className = 'token-success-msg';
+            successMsg.style.cssText = `
+                background: #e8f5e9;
+                color: #2e7d32;
+                padding: 15px;
+                border-radius: 10px;
+                margin: 20px 0;
+                border-left: 4px solid #4caf50;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                animation: fadeIn 0.5s ease;
+            `;
+            successMsg.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <div>Token generated successfully from AI Assistant!</div>
+                    <small>Your appointment is confirmed. Please save this token.</small>
+                </div>
+            `;
+            
+            const instructions = tokenCard.querySelector('.token-instructions');
+            if (instructions) {
+                tokenCard.insertBefore(successMsg, instructions);
+            }
+        }
+
+        function animateTokenGeneration() {
+            const tokenCard = document.getElementById('tokenCard');
+            if (!tokenCard) return;
+            
+            tokenCard.style.animation = 'tokenPulse 0.5s ease-in-out 3';
+            
+            setTimeout(() => {
+                tokenCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        }
+
+        // Make functions available globally for debugging
+        window.JanSevaAI = {
+            toggleVoiceInput,
+            speakText,
+            stopSpeech,
+            checkEligibility,
+            processUserQuery,
+            determineServicePath,
+            generateSmartToken,
+            showPage,
+            showToast,
+            toggleTheme
+        };
+
+        // Add CSS for simple mode
+        const simpleModeCSS = `
+            .simple-mode {
+                font-size: 18px !important;
+            }
+            
+            .simple-mode .btn-primary,
+            .simple-mode .btn-secondary,
+            .simple-mode .btn-action {
+                padding: 20px 30px !important;
+                font-size: 20px !important;
+                min-height: 60px;
+            }
+            
+            .simple-mode .logo {
+                width: 70px !important;
+                height: 70px !important;
+                font-size: 32px !important;
+            }
+            
+            .simple-mode .logo-text h1 {
+                font-size: 28px !important;
+            }
+            
+            .simple-mode .nav-menu li a {
+                padding: 12px 20px !important;
+                font-size: 18px !important;
+            }
+            
+            .simple-mode .step-card,
+            .simple-mode .problem-card,
+            .simple-mode .ai-input-panel,
+            .simple-mode .ai-analysis-panel {
+                padding: 40px !important;
+            }
+        `;
+        
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = simpleModeCSS;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
